@@ -1,0 +1,16 @@
+{
+    "name": "authy/php",
+    "description": "PHP client for Authy",
+    "require": {
+        "resty/resty": "0.3.8"
+    },
+    "require-dev": {
+        "EHER/PHPUnit": ">= 1.6"
+    },
+    "authors": [
+        {
+            "name": "David Cuadrado",
+            "email": "david@authy.com"
+        }
+    ]
+}
