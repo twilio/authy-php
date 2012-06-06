@@ -1,0 +1,18 @@
+{
+	"name": "resty/resty",
+	"type": "library",
+	"description": "A simple PHP library for doing RESTful HTTP stuff. Does not require the curl extension",
+	"keywords": ["rest","http","client","restful"],
+	"homepage": "https://github.com/fictivekin/resty.php",
+	"license": "Apache 2.0",
+	"authors": [
+		{
+			"name": "Ed Finkler",
+			"email": "ed@fictivekin.com",
+			"homepage": "http://fictivekin.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0"
+	}
+}

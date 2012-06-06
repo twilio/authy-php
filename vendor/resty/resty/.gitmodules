@@ -1,0 +1,3 @@
+[submodule "tests/FUnit"]
+	path = tests/FUnit
+	url = git://github.com/funkatron/FUnit.git
