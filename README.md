@@ -46,13 +46,17 @@ Once again you can use `ok()` to verify whether the token was valid or not.
         // the user is valid
 
 ### Requesting SMS Tokens
+To be able to use this method you need to have activated the SMS plugin for your Authy App.
 
 To request a SMS token you only need the user id.
 
 	$sms = $authy_api->request_sms('authy-id');
 
 As always, you can use `ok()` to verify if the token was sent. 
-To be able to use this method you need to have activated the SMS plugin for your Authy App.
+This call will be ignored if the user is using the Authy Mobile App. If you still want to send
+the SMS pass force=>true as an option
+
+	$sms = $authy_api->request_sms('authy-id', array("force" => true));
 
 
 ### More…
