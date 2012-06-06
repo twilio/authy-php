@@ -1,5 +1,25 @@
 <?php
+/**
+ * ApiClient
+ *
+ * PHP version 5
+ *
+ * @category Services
+ * @package  Authy
+ * @author   David Cuadrado <david@authy.com>
+ * @license  http://creativecommons.org/licenses/MIT/ MIT
+ * @link     http://authy.github.com/pear
+ */
 
+/**
+ * Authy API interface.
+ *
+ * @category Services
+ * @package  Authy
+ * @author   David Cuadrado <david@authy.com>
+ * @license  http://creativecommons.org/licenses/MIT/ MIT
+ * @link     http://authy.github.com/pear
+ */
 class AuthyApi
 {
     const VERSION = '0.0.1';
@@ -7,6 +27,12 @@ class AuthyApi
     protected $api_key;
     protected $api_url;
 
+    /**
+     * Constructor.
+     *
+     * @param string $api_key Api Key
+     * @param string $api_url Optional api url
+     */
     public function __construct($api_key, $api_url = "http://sandbox-api.authy.com")
     {
         $this->rest = new Resty();
@@ -17,8 +43,18 @@ class AuthyApi
         $this->api_url = $api_url;
     }
 
-    public function register_user($email, $cellphone, $country_code) {
-        $params = $this->default_params();
+    /**
+     * Register a user.
+     *
+     * @param string $email        New user's email
+     * @param string $cellphone    New user's cellphone
+     * @param string $country_code New user's country code. defaults to USA(1)
+     *
+     * @return AuthyUser the new registered user
+     */
+    public function registerUser($email, $cellphone, $country_code = 1)
+    {
+        $params = $this->defaultParams();
         $params['user'] = array(
             "email" => $email,
             "country_code" => $country_code,
@@ -30,22 +66,50 @@ class AuthyApi
         return new AuthyUser($resp);
     }
 
-    public function verify_token($authy_id, $token, $opts = array()) {
-        $params = array_merge($this->default_params(), $opts);
-        $resp = $this->rest->get('/protected/json/verify/'. urlencode($token) .'/'. urlencode($authy_id), $params);
+    /**
+     * Verify a given token.
+     *
+     * @param string $authy_id User's id stored in your database
+     * @param string $token    The token entered by the user
+     * @param string $opts     Array of options, for example: array("force" => true)
+     *
+     * @return AuthyResponse the server response
+     */
+    public function verifyToken($authy_id, $token, $opts = array())
+    {
+        $params = array_merge($this->defaultParams(), $opts);
+        $url = '/protected/json/verify/'. urlencode($token)
+                                        .'/'. urlencode($authy_id);
+        $resp = $this->rest->get($url, $params);
 
         return new AuthyResponse($resp);
     }
 
-    public function request_sms($authy_id, $opts = array()) {
-        $params = array_merge($this->default_params(), $opts);
+    /**
+     * Request a valid token via SMS.
+     *
+     * @param string $authy_id User's id stored in your database
+     * @param string $opts     Array of options, for example: array("force" => true)
+     *
+     * @return AuthyResponse the server response
+     */
+    public function requestSms($authy_id, $opts = array())
+    {
+        $params = array_merge($this->defaultParams(), $opts);
+        $url = '/protected/json/sms/'.urlencode($authy_id);
 
-        $resp = $this->rest->get('/protected/json/sms/'.urlencode($authy_id), $params);
+        $resp = $this->rest->get($url, $params);
 
         return new AuthyResponse($resp);
     }
 
-    protected function default_params() {
+    /**
+     * Return the default parameters.
+     *
+     * @return array array with the default parameters
+     */
+    protected function defaultParams()
+    {
         return array("api_key" => $this->api_key);
     }
 };

@@ -21,7 +21,7 @@ Now that you have an Authy API object you can start sending requests.
 
 Creating users is very easy, you need to pass an email, a cellphone and _optionally_ a country code:
    
-    $user = $authy_api->register_user('new_user@email.com', '405-342-5699', 57); //email, cellphone, area_code
+    $user = $authy_api->registerUser('new_user@email.com', '405-342-5699', 57); //email, cellphone, area_code
 
 in this case `57` is the country code(Colombia), use `1` for USA. If non are specified it defaults to USA.
 
@@ -42,7 +42,7 @@ it returns a dictionary explaining what went wrong with the request.
 
 To verify users you need the user id and a token. The token you get from the user through your login form. 
 
-    $verification = $authy_api->verify_token('authy-id', 'token-entered-by-the-user')
+    $verification = $authy_api->verifyToken('authy-id', 'token-entered-by-the-user')
 
 Once again you can use `ok()` to verify whether the token was valid or not.
 
@@ -54,7 +54,7 @@ Once again you can use `ok()` to verify whether the token was valid or not.
 
 To request a SMS token you only need the user id.
 
-	$sms = $authy_api->request_sms('authy-id');
+	$sms = $authy_api->requestSms('authy-id');
 
 As always, you can use `ok()` to verify if the token was sent. To be able to use this method you need to have activated the SMS plugin for your Authy App.
 

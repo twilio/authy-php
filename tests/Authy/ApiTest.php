@@ -11,28 +11,28 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testCreateUserWithValidData() {
-        $user = $this->client->register_user('user@example.com', '305-456-2345', 1);
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
 
         $this->assertEquals("integer", gettype($user->id()));
         $this->assertEmpty((array) $user->errors());
     }
 
     public function testCreateUserWithInvalidData() {
-        $user = $this->client->register_user('user@example.com', '', 1);
+        $user = $this->client->registerUser('user@example.com', '', 1);
 
         $this->assertEquals("NULL", gettype($user->id()));
         $this->assertNotEmpty((array) $user->errors());
     }
 
     public function testVerifyTokenWithValidUser() {
-        $user = $this->client->register_user('user@example.com', '305-456-2345', 1);
-        $token = $this->client->verify_token($user->id(), $this->invalid_token);
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $token = $this->client->verifyToken($user->id(), $this->invalid_token);
 
         $this->assertEquals(false, $token->ok());
     }
 
     public function testVerifyTokenWithInvalidUser() {
-        $token = $this->client->verify_token(0, $this->invalid_token);
+        $token = $this->client->verifyToken(0, $this->invalid_token);
 
         $this->assertEquals(false, $token->ok());
         $this->assertNotEmpty((array) $token->errors());
@@ -40,20 +40,20 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testVerifyTokenWithInvalidToken() {
-        $user = $this->client->register_user('user@example.com', '305-456-2345', 1);
-        $token = $this->client->verify_token($user->id(), $this->valid_token);
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $token = $this->client->verifyToken($user->id(), $this->valid_token);
         $this->assertEquals(true, $token->ok());
     }
 
     public function testRequestSmsWithInvalidUser() {
-        $sms = $this->client->request_sms(0, array("force" => true));
+        $sms = $this->client->requestSms(0, array("force" => true));
 
         $this->assertEquals(false, $sms->ok());
     }
 
     public function testRequestSmsWithValidUser() {
-        $user = $this->client->register_user('user@example.com', '305-456-2345', 1);
-        $sms = $this->client->request_sms($user->id(), array("force" => true));
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $sms = $this->client->requestSms($user->id(), array("force" => true));
 
         $this->assertEquals(false, $sms->ok());
         $this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
