@@ -2,7 +2,6 @@
     "name": "authy/php",
     "description": "PHP client for Authy",
     "require": {
-        "resty/resty": "0.3.8"
     },
     "require-dev": {
         "EHER/PHPUnit": ">= 1.6"

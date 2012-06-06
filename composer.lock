@@ -1,10 +1,7 @@
 {
-    "hash": "b4a0992b35938c8961b468e74d5998b2",
+    "hash": "1af31ecd2685057fec21736e6d504609",
     "packages": [
-        {
-            "package": "resty/resty",
-            "version": "0.3.8"
-        }
+
     ],
     "packages-dev": null,
     "aliases": [

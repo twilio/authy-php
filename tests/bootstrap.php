@@ -6,7 +6,8 @@ require_once __DIR__.'/Authy/TestCase.php';
 spl_autoload_register(function($className)
 {
     $className = ltrim($className, '\\');
-    $fileName  = __DIR__.'/../lib/';
+    $baseDir  = __DIR__.'/../lib/';
+    $fileName  = '';
     $namespace = '';
     if ($lastNsPos = strripos($className, '\\')) {
         $namespace = substr($className, 0, $lastNsPos);
@@ -15,8 +16,11 @@ spl_autoload_register(function($className)
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
-    if (file_exists($fileName)) {
-        require $fileName;
+    if (file_exists($baseDir.'/'.$fileName)) {
+        require $baseDir.'/'.$fileName;
+        return true;
+    } else if (file_exists($baseDir.'/vendor/'.$fileName)) {
+        require $baseDir.'/vendor/'.$fileName;
         return true;
     } else {
         print("File not found for ". $className .": ".$fileName);
