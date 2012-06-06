@@ -9,10 +9,10 @@ TODO
 
 ## Usage
 
-To use this client you just need to use AuthyApi and initialize it with your API KEY
+To use this client you just need to use Authy_Api and initialize it with your API KEY
 
 
-    $authy_api = new AuthyApi('#your_api_key');
+    $authy_api = new Authy_Api('#your_api_key');
 
 Now that you have an Authy API object you can start sending requests.
 

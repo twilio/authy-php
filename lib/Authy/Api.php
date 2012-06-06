@@ -20,7 +20,7 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-class AuthyApi
+class Authy_Api
 {
     const VERSION = '0.0.1';
     protected $rest;
@@ -37,7 +37,7 @@ class AuthyApi
     {
         $this->rest = new Resty();
         $this->rest->setBaseURL($api_url);
-        $this->rest->setUserAgent("authy-php v".AuthyApi::VERSION);
+        $this->rest->setUserAgent("authy-php v".Authy_Api::VERSION);
 
         $this->api_key = $api_key;
         $this->api_url = $api_url;
@@ -50,7 +50,7 @@ class AuthyApi
      * @param string $cellphone    New user's cellphone
      * @param string $country_code New user's country code. defaults to USA(1)
      *
-     * @return AuthyUser the new registered user
+     * @return Authy_User the new registered user
      */
     public function registerUser($email, $cellphone, $country_code = 1)
     {
@@ -63,7 +63,7 @@ class AuthyApi
 
         $resp = $this->rest->post('/protected/json/users/new', $params);
 
-        return new AuthyUser($resp);
+        return new Authy_User($resp);
     }
 
     /**
@@ -73,7 +73,7 @@ class AuthyApi
      * @param string $token    The token entered by the user
      * @param string $opts     Array of options, for example: array("force" => true)
      *
-     * @return AuthyResponse the server response
+     * @return Authy_Response the server response
      */
     public function verifyToken($authy_id, $token, $opts = array())
     {
@@ -82,7 +82,7 @@ class AuthyApi
                                         .'/'. urlencode($authy_id);
         $resp = $this->rest->get($url, $params);
 
-        return new AuthyResponse($resp);
+        return new Authy_Response($resp);
     }
 
     /**
@@ -91,7 +91,7 @@ class AuthyApi
      * @param string $authy_id User's id stored in your database
      * @param string $opts     Array of options, for example: array("force" => true)
      *
-     * @return AuthyResponse the server response
+     * @return Authy_Response the server response
      */
     public function requestSms($authy_id, $opts = array())
     {
@@ -100,7 +100,7 @@ class AuthyApi
 
         $resp = $this->rest->get($url, $params);
 
-        return new AuthyResponse($resp);
+        return new Authy_Response($resp);
     }
 
     /**

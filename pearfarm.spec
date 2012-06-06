@@ -7,7 +7,7 @@ $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => 
              ->setChannel('authy.github.com/pear')
              ->setSummary('A PHP client for Authy')
              ->setDescription('A PHP client for Authy')
-             ->setReleaseVersion(AuthyApi::VERSION)
+             ->setReleaseVersion(Authy_Api::VERSION)
              ->setReleaseStability('stable')
              ->setApiVersion('0.0.1')
              ->setApiStability('stable')

@@ -21,7 +21,7 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-class AuthyResponse
+class Authy_Response
 {
     protected $raw_response;
     protected $body;

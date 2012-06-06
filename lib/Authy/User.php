@@ -13,7 +13,7 @@
  */
 
 /**
- * User implementation. Extends from AuthyResponse
+ * User implementation. Extends from Authy_Response
  *
  * @category Services
  * @package  Authy
@@ -21,7 +21,7 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-class AuthyUser extends \AuthyResponse
+class Authy_User extends \Authy_Response
 {
 
     /**
