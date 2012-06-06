@@ -23,7 +23,7 @@
 function Authy_autoloader($className)
 {
     $className = ltrim($className, '\\');
-    $baseDir  = __DIR__.'/../lib/';
+    $baseDir  = __DIR__.'/lib/';
     $fileName  = '';
     $namespace = '';
     if ($lastNsPos = strripos($className, '\\')) {

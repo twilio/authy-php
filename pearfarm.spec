@@ -3,7 +3,7 @@
 require 'lib/Authy/Api.php';
 
 $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => dirname(__FILE__)))
-             ->setName('authy')
+             ->setName('Authy')
              ->setChannel('authy.github.com/pear')
              ->setSummary('A PHP client for Authy')
              ->setDescription('A PHP client for Authy')
