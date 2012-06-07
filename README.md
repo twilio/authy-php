@@ -4,13 +4,24 @@ A php library for using the Authy API.
 
 ## Installation
 
-Install via pear:
+### Install via pear:
 
     pear channel-discover authy.github.com/pear
     pear install authy/Authy
 
 then you can just `require 'Authy/Authy.php'` and start using Authy
 
+### Install via composer:
+
+[`authy/php`](http://packagist.org/packages/authy/php) package is available on [Packagist](http://packagist.org).
+
+Include it in your `composer.json` as follows:
+
+	{
+	    "require": {
+	        "authy/php": "*"
+	    }
+	}
 
 ## Usage
 
