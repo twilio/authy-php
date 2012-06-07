@@ -2,6 +2,16 @@
 
 A php library for using the Authy API.
 
+## Installation
+
+Install via pear:
+
+    pear channel-discover authy.github.com/pear
+    pear install authy/Authy
+
+then you can just `require 'Authy/Authy.php'` and start using Authy
+
+
 ## Usage
 
 To use this client you just need to use Authy_Api and initialize it with your API KEY
