@@ -41,7 +41,7 @@ NOTE: if you want to make requests to sandbox you have to pass the sandbox url a
 
 Creating users is very easy, you need to pass an email, a cellphone and _optionally_ a country code:
 
-    $user = $authy_api->register_user('new_user@email.com', '405-342-5699', 1); //email, cellphone, area_code
+    $user = $authy_api->registerUser('new_user@email.com', '405-342-5699', 1); //email, cellphone, area_code
 
 in this case `1` is the country code (USA). If no country code is specified, it defaults to USA.
 
