@@ -93,7 +93,7 @@ As always, you can use `ok()` to verify if the token was sent.
 This call will be ignored if the user is using the Authy Mobile App. If you still want to send
 the SMS pass force=>true as an option
 
-	$sms = $authy_api->request_sms('authy-id', array("force" => true));
+	$sms = $authy_api->requestSms('authy-id', array("force" => true));
 
 
 ### More…
