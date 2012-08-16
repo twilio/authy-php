@@ -14,7 +14,7 @@ A php library for using the Authy API.
 Now copy `authy-php` folder to your project directory and include the library file.
 
 	mv authy-php [/path/to/your/project/libs]
-	require '/path/to/your/project/libs/authy-php/lib/Authy/Api.php';
+	require '/path/to/your/project/libs/authy-php/Authy.php';
 
 
 ### Install via pear:
