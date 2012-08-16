@@ -4,6 +4,9 @@ A php library for using the Authy API.
 
 ## Installation
 
+This library requires PHP 5.3+
+
+
 ### Install by copying library into your code
 
 
@@ -66,8 +69,11 @@ If request went right, you need to store the authy id in your database. Use `use
         // store user->id() in your user database
 
 if something goes wrong `ok()` returns `false` and you can see the errors using the following code
+
     else
-    	$user->errors();
+        foreach($user->errors() as $field => $message) {
+          printf("$field = $message");
+        }
 
 it returns a dictionary explaining what went wrong with the request. Errors will be in plain English and can
 be passed back to the user.

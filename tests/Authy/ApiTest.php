@@ -20,6 +20,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("NULL", gettype($user->id()));
         $this->assertNotEmpty((array) $user->errors());
+
+        foreach($user->errors() as $field => $message) {
+          printf("$field = $message");
+        }
     }
 
     public function testVerifyTokenWithValidUser() {
@@ -34,7 +38,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(false, $token->ok());
         $this->assertNotEmpty((array) $token->errors());
-        $this->assertEquals("user has not configured this application", $token->errors()->error);
+        $this->assertEquals("user doesn't exist in this application", $token->errors()->user);
     }
 
     public function testVerifyTokenWithInvalidToken() {
@@ -53,8 +57,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
         $sms = $this->client->requestSms($user->id(), array("force" => true));
 
-        $this->assertEquals(false, $sms->ok());
-        $this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
+        $this->assertEquals(true, $sms->ok());
+        //$this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
     }
 }
 
