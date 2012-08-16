@@ -33,7 +33,7 @@ class Authy_Api
      * @param string $api_key Api Key
      * @param string $api_url Optional api url
      */
-    public function __construct($api_key, $api_url = "http://sandbox-api.authy.com")
+    public function __construct($api_key, $api_url = "https://api.authy.com")
     {
         $this->rest = new Resty();
         $this->rest->setBaseURL($api_url);
