@@ -22,7 +22,7 @@
  */
 class Authy_Api
 {
-    const VERSION = '0.0.1';
+    const VERSION = '1.2.0';
     protected $rest;
     protected $api_key;
     protected $api_url;
