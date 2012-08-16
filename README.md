@@ -4,6 +4,19 @@ A php library for using the Authy API.
 
 ## Installation
 
+### Install by copying library into your code
+
+
+    wget https://github.com/authy/authy-php/tarball/master -O authy-php.tar.gz
+	tar xvzf authy-php.tar.gz
+	mv authy-authy-php-* authy-php
+
+Now copy `authy-php` folder to your project directory and include the library file.
+
+	mv authy-php [/path/to/your/project/libs]
+	require '/path/to/your/project/libs/authy-php/lib/Authy/Api.php';
+
+
 ### Install via pear:
 
     pear channel-discover authy.github.com/pear
@@ -22,6 +35,7 @@ Include it in your `composer.json` as follows:
 	        "authy/php": "*"
 	    }
 	}
+
 
 ## Usage
 
