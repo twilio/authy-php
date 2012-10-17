@@ -71,7 +71,7 @@ class Authy_Api
      *
      * @param string $authy_id User's id stored in your database
      * @param string $token    The token entered by the user
-     * @param string $opts     Array of options, for example: array("force" => true)
+     * @param string $opts     Array of options, for example: array("force" => "true")
      *
      * @return Authy_Response the server response
      */
@@ -89,7 +89,7 @@ class Authy_Api
      * Request a valid token via SMS.
      *
      * @param string $authy_id User's id stored in your database
-     * @param string $opts     Array of options, for example: array("force" => true)
+     * @param string $opts     Array of options, for example: array("force" => "true")
      *
      * @return Authy_Response the server response
      */

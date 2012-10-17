@@ -48,14 +48,14 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testRequestSmsWithInvalidUser() {
-        $sms = $this->client->requestSms(0, array("force" => true));
+        $sms = $this->client->requestSms(0, array("force" => "true"));
 
         $this->assertEquals(false, $sms->ok());
     }
 
     public function testRequestSmsWithValidUser() {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $sms = $this->client->requestSms($user->id(), array("force" => true));
+        $sms = $this->client->requestSms($user->id(), array("force" => "true"));
 
         $this->assertEquals(true, $sms->ok());
         //$this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
