@@ -100,7 +100,7 @@ Once again you can use `ok()` to verify whether the token was valid or not.
 
 If you wish to verify tokens even if the user has not yet complete registration, pass force=true when verifying the token.
 
-    $verification = $authy_api->verifyToken('authy-id', 'token-entered-by-the-user', array("force" => true));
+    $verification = $authy_api->verifyToken('authy-id', 'token-entered-by-the-user', array("force" => "true"));
 
 ## Requesting SMS Tokens
 To be able to use this method you need to have activated the SMS plugin for your Authy App.
@@ -113,7 +113,7 @@ As always, you can use `ok()` to verify if the token was sent.
 This call will be ignored if the user is using the Authy Mobile App. If you still want to send
 the SMS pass force=>true as an option
 
-	$sms = $authy_api->requestSms('authy-id', array("force" => true));
+	$sms = $authy_api->requestSms('authy-id', array("force" => "true"));
 
 
 ### More…
