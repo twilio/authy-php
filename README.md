@@ -56,6 +56,9 @@ NOTE: if you want to make requests to sandbox you have to pass the sandbox url a
 
 ## Creating Users
 
+__NOTE: User is matched based on cellphone and country code not e-mail.
+A cellphone is uniquely associated with an authy_id.__  
+
 Creating users is very easy, you need to pass an email, a cellphone and _optionally_ a country code:
 
     $user = $authy_api->registerUser('new_user@email.com', '405-342-5699', 1); //email, cellphone, area_code
