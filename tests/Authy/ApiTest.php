@@ -28,7 +28,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testVerifyTokenWithValidUser() {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $token = $this->client->verifyToken($user->id(), $this->invalid_token);
+        $token = $this->client->verifyToken($user->id(), $this->invalid_token, array("force" => "true"));
 
         $this->assertEquals(false, $token->ok());
     }
@@ -38,7 +38,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(false, $token->ok());
         $this->assertNotEmpty((array) $token->errors());
-        $this->assertEquals("user doesn't exist in this application", $token->errors()->user);
+        $this->assertEquals("User doesn't exist.", $token->errors()->message);
     }
 
     public function testVerifyTokenWithInvalidToken() {
