@@ -9,7 +9,7 @@ $spec = Pearfarm_PackageSpec::create(array(Pearfarm_PackageSpec::OPT_BASEDIR => 
              ->setDescription('A PHP client for Authy')
              ->setReleaseVersion(Authy_Api::VERSION)
              ->setReleaseStability('stable')
-             ->setApiVersion('1.2.0')
+             ->setApiVersion(Authy_Api::VERSION)
              ->setApiStability('stable')
              ->setLicense(Pearfarm_PackageSpec::LICENSE_MIT)
              ->setNotes('Initial release.')
