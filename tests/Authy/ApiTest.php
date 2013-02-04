@@ -28,7 +28,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testVerifyTokenWithValidUser() {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $token = $this->client->verifyToken($user->id(), $this->invalid_token, array("force" => "true"));
+        $token = $this->client->verifyToken($user->id(), $this->invalid_token);
 
         $this->assertEquals(false, $token->ok());
     }
