@@ -5,9 +5,6 @@
     "keywords": ["api", "authentication", "two-factor"],
     "homepage": "https://github.com/authy/authy-php",
     "license": "MIT",
-    "require": {
-	"resty/resty": "dev-master"
-    },
     "require-dev": {
         "EHER/PHPUnit": ">= 1.6"
     },
