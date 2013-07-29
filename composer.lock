@@ -3,9 +3,47 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "056de5da750c1acbddee411b7feb3329",
+    "hash": "2339ce7aa31ef8928bb3b995d2eda0de",
     "packages": [
-
+        {
+            "name": "resty/resty",
+            "version": "0.3.8",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/fictivekin/Resty.php.git",
+                "reference": "0.3.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/fictivekin/Resty.php/zipball/0.3.8",
+                "reference": "0.3.8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache 2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ed Finkler",
+                    "email": "ed@fictivekin.com",
+                    "homepage": "http://fictivekin.com"
+                }
+            ],
+            "description": "A simple PHP library for doing RESTful HTTP stuff. Does not require the curl extension",
+            "homepage": "https://github.com/fictivekin/resty.php",
+            "keywords": [
+                "client",
+                "http",
+                "rest",
+                "restful"
+            ],
+            "time": "2012-05-23 07:18:44"
+        }
     ],
     "packages-dev": [
         {
