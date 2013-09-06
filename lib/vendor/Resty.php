@@ -3,6 +3,8 @@
  * A simple PHP library for doing RESTful HTTP stuff. Does *not* require the curl extension.
  * @link https://github.com/fictivekin/resty.php
  */
+namespace vendor;
+
 class Resty
 {
 
@@ -839,8 +841,4 @@ class Resty
 
 		return error_log($line);
 	}
-
-
-
 }
-
