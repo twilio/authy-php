@@ -21,7 +21,9 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-class Authy_User extends \Authy_Response
+namespace Authy;
+use Authy\AuthyResponse;
+class AuthyUser extends AuthyResponse
 {
 
     /**

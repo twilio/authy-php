@@ -21,7 +21,9 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-class Authy_Response
+namespace Authy;
+
+class AuthyResponse
 {
     protected $raw_response;
     protected $body;
@@ -36,7 +38,7 @@ class Authy_Response
     {
         $this->raw_response = $raw_response;
         $this->body = $raw_response['body'];
-        $this->errors = new stdClass();
+        $this->errors = new \stdClass();
 
         // Handle errors
         if (isset($this->body->errors)) {
