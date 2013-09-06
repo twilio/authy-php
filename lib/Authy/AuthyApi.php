@@ -20,7 +20,13 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-class Authy_Api
+namespace Authy;
+
+use Authy\AutyResponse;
+use Authy\AuthyUser;
+use vendor;
+
+class AuthyApi
 {
     const VERSION = '1.3.0';
     protected $rest;
@@ -35,9 +41,9 @@ class Authy_Api
      */
     public function __construct($api_key, $api_url = "https://api.authy.com")
     {
-        $this->rest = new Resty();
+        $this->rest = new vendor\Resty();
         $this->rest->setBaseURL($api_url);
-        $this->rest->setUserAgent("authy-php v".Authy_Api::VERSION);
+        $this->rest->setUserAgent("authy-php v".AuthyApi::VERSION);
 
         $this->api_key = $api_key;
         $this->api_url = $api_url;
@@ -63,7 +69,7 @@ class Authy_Api
 
         $resp = $this->rest->post('/protected/json/users/new', $params);
 
-        return new Authy_User($resp);
+        return new AuthyUser($resp);
     }
 
     /**
@@ -86,7 +92,7 @@ class Authy_Api
                                         .'/'. urlencode($authy_id);
         $resp = $this->rest->get($url, $params);
 
-        return new Authy_Response($resp);
+        return new AuthyResponse($resp);
     }
 
     /**
@@ -105,7 +111,7 @@ class Authy_Api
 
         $resp = $this->rest->get($url, $params);
 
-        return new Authy_Response($resp);
+        return new AuthyResponse($resp);
     }
 	
     /**

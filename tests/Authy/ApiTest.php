@@ -1,9 +1,9 @@
 <?php
-
+use Authy\AuthyApi;
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp() {
-        $this->client = new Authy_Api('bf12974d70818a08199d17d5e2bae630', 'http://sandbox-api.authy.com');
+        $this->client = new AuthyApi('bf12974d70818a08199d17d5e2bae630', 'http://sandbox-api.authy.com');
         $this->invalid_token = '1234567';
         $this->valid_token = '0000000';
     }
