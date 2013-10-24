@@ -107,6 +107,43 @@ class Authy_Api
 
         return new Authy_Response($resp);
     }
+	
+    /**
+     * Cellphone call, usually used with SMS Token issues or if no smartphone is available.
+	 * This function needs the app to be on Starter Plan (free) or higher.
+     *
+     * @param string $authy_id User's id stored in your database
+     * @param string $opts     Array of options, for example:
+     *                           array("force" => "true")
+     *
+     * @return Authy_Response the server response
+     */
+    public function phoneCall($authy_id, $opts = array())
+    {
+        $params = array_merge($this->defaultParams(), $opts);
+        $url = '/protected/json/call/'.urlencode($authy_id);
+
+        $resp = $this->rest->get($url, $params);
+
+        return new Authy_Response($resp);
+    }
+	
+    /**
+     * Deletes an user.
+     *
+     * @param string $authy_id User's id stored in your database
+     *
+     * @return Authy_Response the server response
+     */	
+    public function deleteUser($authy_id)
+    {
+		$params = array_merge($this->defaultParams());
+        $url = '/protected/json/users/delete/'.urlencode($authy_id);
+
+        $resp = $this->rest->post($url, $params);
+
+        return new Authy_Response($resp);
+    }	
 
     /**
      * Return the default parameters.
