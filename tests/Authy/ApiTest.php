@@ -60,6 +60,35 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $sms->ok());
         //$this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
     }
+
+    public function testPhonceCallWithInvalidUser() {
+        $call = $this->client->phoneCall(0, array());
+
+        $this->assertEquals(false, $call->ok());
+        $this->assertEquals("User doesn't exist.", $call->errors()->message);
+    }
+
+    public function testPhonceCallWithValidUser() {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $call = $this->client->phoneCall($user->id(), array());
+
+        $this->assertEquals(false, $call->ok());
+        $this->assertEquals("Call was NOT done", $call->errors()->message);
+    }
+
+    public function testDeleteUserWithInvalidUser() {
+        $response = $this->client->deleteUser(0);
+
+        $this->assertEquals(false, $response->ok());
+        $this->assertEquals("User doesn't exist.", $response->errors()->message);
+    }
+
+    public function testDeleteUserWithValidUser() {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $response = $this->client->deleteUser($user->id());
+
+        $this->assertEquals(true, $response->ok());
+    }
 }
 
 
