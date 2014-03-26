@@ -35,7 +35,7 @@ Include it in your `composer.json` as follows:
 
 	{
 	    "require": {
-	        "authy/php": "*"
+	        "authy/php": "dev-master"
 	    }
 	}
 
