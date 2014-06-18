@@ -44,13 +44,13 @@ class AuthyResponse
         if (isset($this->body->errors)) {
             $this->errors = $this->body->errors; // when response is {errors: {}}
             unset($this->body->errors);
-        } else if ($raw_response['status'] == 400) {
+        } elseif ($raw_response['status'] == 400) {
             $this->errors = $this->body; // body here is a stdClass
-            $this->body = new stdClass();
-        } else if (!$this->ok() && gettype($this->body) == 'string') {
+            $this->body = new \stdClass();
+        } elseif (!$this->ok() && gettype($this->body) == 'string') {
              // the response was an error so put the body as an error
             $this->errors = (object) array("error" => $this->body);
-            $this->body = new stdClass();
+            $this->body = new \stdClass();
         }
     }
 
@@ -73,7 +73,6 @@ class AuthyResponse
     {
         return isset($this->body->id) ? $this->body->id : null;
     }
-
 
     /**
      * Get the request errors

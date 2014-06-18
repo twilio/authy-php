@@ -22,9 +22,7 @@
  */
 namespace Authy;
 
-use Authy\AutyResponse;
-use Authy\AuthyUser;
-use vendor;
+use Resty\Resty;
 
 class AuthyApi
 {
@@ -41,7 +39,7 @@ class AuthyApi
      */
     public function __construct($api_key, $api_url = "https://api.authy.com")
     {
-        $this->rest = new vendor\Resty();
+        $this->rest = new Resty();
         $this->rest->setBaseURL($api_url);
         $this->rest->setUserAgent("authy-php v".AuthyApi::VERSION);
 
@@ -52,11 +50,10 @@ class AuthyApi
     /**
      * Register a user.
      *
-     * @param string $email        New user's email
-     * @param string $cellphone    New user's cellphone
-     * @param string $country_code New user's country code. defaults to USA(1)
-     *
-     * @return Authy_User the new registered user
+     * @param  string    $email        New user's email
+     * @param  string    $cellphone    New user's cellphone
+     * @param  int       $country_code New user's country code. defaults to USA(1)
+     * @return AuthyUser the new registered user
      */
     public function registerUser($email, $cellphone, $country_code = 1)
     {
@@ -77,10 +74,9 @@ class AuthyApi
      *
      * @param string $authy_id User's id stored in your database
      * @param string $token    The token entered by the user
-     * @param string $opts     Array of options, for example: 
-     *                           array("force" => "true")
+     * @param array  $opts     Array of options, for example: array("force" => "true")
      *
-     * @return Authy_Response the server response
+     * @return AuthyResponse the server response
      */
     public function verifyToken($authy_id, $token, $opts = array())
     {
@@ -99,10 +95,9 @@ class AuthyApi
      * Request a valid token via SMS.
      *
      * @param string $authy_id User's id stored in your database
-     * @param string $opts     Array of options, for example:
-     *                           array("force" => "true")
+     * @param array  $opts     Array of options, for example: array("force" => "true")
      *
-     * @return Authy_Response the server response
+     * @return AuthyResponse the server response
      */
     public function requestSms($authy_id, $opts = array())
     {
@@ -113,16 +108,15 @@ class AuthyApi
 
         return new AuthyResponse($resp);
     }
-	
+
     /**
      * Cellphone call, usually used with SMS Token issues or if no smartphone is available.
-	 * This function needs the app to be on Starter Plan (free) or higher.
+     * This function needs the app to be on Starter Plan (free) or higher.
      *
      * @param string $authy_id User's id stored in your database
-     * @param string $opts     Array of options, for example:
-     *                           array("force" => "true")
+     * @param array  $opts     Array of options, for example: array("force" => "true")
      *
-     * @return Authy_Response the server response
+     * @return AuthyResponse the server response
      */
     public function phoneCall($authy_id, $opts = array())
     {
@@ -131,25 +125,25 @@ class AuthyApi
 
         $resp = $this->rest->get($url, $params);
 
-        return new Authy_Response($resp);
+        return new AuthyResponse($resp);
     }
-	
+
     /**
      * Deletes an user.
      *
      * @param string $authy_id User's id stored in your database
      *
-     * @return Authy_Response the server response
-     */	
+     * @return AuthyResponse the server response
+     */
     public function deleteUser($authy_id)
     {
-		$params = array_merge($this->defaultParams());
+        $params = array_merge($this->defaultParams());
         $url = '/protected/json/users/delete/'.urlencode($authy_id);
 
         $resp = $this->rest->post($url, $params);
 
-        return new Authy_Response($resp);
-    }	
+        return new AuthyResponse($resp);
+    }
 
     /**
      * Return the default parameters.
@@ -160,4 +154,4 @@ class AuthyApi
     {
         return array("api_key" => $this->api_key);
     }
-};
+}

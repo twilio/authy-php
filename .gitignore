@@ -3,4 +3,5 @@
 package.xml
 pkg/
 *.tmproj
-
+vendor/
+composer.lock

@@ -22,10 +22,9 @@
  * @link     http://authy.github.com/pear
  */
 namespace Authy;
-use Authy\AuthyResponse;
+
 class AuthyUser extends AuthyResponse
 {
-
     /**
      * Constructor.
      *

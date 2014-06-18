@@ -6,27 +6,6 @@ A php library for using the Authy API.
 
 This library requires PHP 5.3+
 
-
-### Install by copying library into your code
-
-
-    wget https://github.com/authy/authy-php/tarball/master -O authy-php.tar.gz
-	tar xvzf authy-php.tar.gz
-	mv authy-authy-php-* authy-php
-
-Now copy `authy-php` folder to your project directory and include the library file.
-
-	mv authy-php [/path/to/your/project/libs]
-	require '/path/to/your/project/libs/authy-php/Authy.php';
-
-
-### Install via pear:
-
-    pear channel-discover authy.github.com/pear
-    pear install authy/Authy
-
-then you can just `require 'Authy/Authy.php'` and start using Authy
-
 ### Install via composer:
 
 [`authy/php`](http://packagist.org/packages/authy/php) package is available on [Packagist](http://packagist.org).
@@ -45,13 +24,13 @@ Include it in your `composer.json` as follows:
 To use this client you just need to use Authy_Api and initialize it with your API KEY
 
 
-    $authy_api = new Authy_Api('#your_api_key');
+    $authy_api = new Authy\AuthyApi('#your_api_key');
 
 Now that you have an Authy API object you can start sending requests.
 
 NOTE: if you want to make requests to sandbox you have to pass the sandbox url as the second argument:
 
-	$authy_api = new Authy_Api('#your_api_key', 'http://sandbox-api.authy.com');
+	$authy_api = new Authy\AuthyApi('#your_api_key', 'http://sandbox-api.authy.com');
 
 
 ## Creating Users
