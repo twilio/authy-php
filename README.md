@@ -14,7 +14,7 @@ Include it in your `composer.json` as follows:
 
 	{
 	    "require": {
-	        "authy/php": "dev-master"
+	        "authy/php": "2.*"
 	    }
 	}
 
@@ -36,7 +36,7 @@ NOTE: if you want to make requests to sandbox you have to pass the sandbox url a
 ## Creating Users
 
 __NOTE: User is matched based on cellphone and country code not e-mail.
-A cellphone is uniquely associated with an authy_id.__  
+A cellphone is uniquely associated with an authy_id.__
 
 Creating users is very easy, you need to pass an email, a cellphone and _optionally_ a country code:
 
@@ -64,12 +64,12 @@ be passed back to the user.
 ## Verifying Tokens
 
 
-__NOTE: Token verification is only enforced if the user has completed registration. To change this behaviour see Forcing Verification section below.__  
-   
+__NOTE: Token verification is only enforced if the user has completed registration. To change this behaviour see Forcing Verification section below.__
+
    >*Registration is completed once the user installs and registers the Authy mobile app or logins once successfully using SMS.*
 
 
-To verify tokens you need the user id and the token. The token you get from the user through your login form. 
+To verify tokens you need the user id and the token. The token you get from the user through your login form.
 
     $verification = $authy_api->verifyToken('authy-id', 'token-entered-by-the-user');
 
@@ -91,7 +91,7 @@ To request a SMS token you only need the user id.
 
 	$sms = $authy_api->requestSms('authy-id');
 
-As always, you can use `ok()` to verify if the token was sent. 
+As always, you can use `ok()` to verify if the token was sent.
 This call will be ignored if the user is using the Authy Mobile App. If you still want to send
 the SMS pass force=>true as an option
 
