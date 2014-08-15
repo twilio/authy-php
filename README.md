@@ -40,7 +40,7 @@ A cellphone is uniquely associated with an authy_id.__
 
 Creating users is very easy, you need to pass an email, a cellphone and _optionally_ a country code:
 
-    $user = $authy_api->registerUser('new_user@email.com', '405-342-5699', 1); //email, cellphone, area_code
+    $user = $authy_api->registerUser('new_user@email.com', '405-342-5699', 1); //email, cellphone, country_code
 
 in this case `1` is the country code (USA). If no country code is specified, it defaults to USA.
 
