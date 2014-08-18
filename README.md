@@ -97,6 +97,35 @@ the SMS pass force=>true as an option
 
 	$sms = $authy_api->requestSms('authy-id', array("force" => "true"));
 
+## Checking User Status
+
+To check a user status, just pass the user id.
+
+  $status = $authy_api->userStatus('authy_id');
+
+## Phone Verification && Info
+
+Authy has an API to verify users via phone calls or sms. Also, user phone information can be gethered
+for support and verification purposes.
+
+### Phone Verification Start
+
+In order to start a phone verification, we ask the API to send a token to the user via sms or call:
+
+    authy_api->phoneVerificationStart('111-111-1111', '1', 'sms');
+
+### Phone Verification Check
+
+Once you get the verification from user, you can check if it's valid with:
+
+    authy_api->phoneVerificationCheck('111-111-1111', '1', '0000');
+
+### Phone Info
+
+If you want to gather additional information about user phone, use phones info.
+
+    authy_api->phoneInfo('111-111-1111', '1');
+
 
 ### More…
 
