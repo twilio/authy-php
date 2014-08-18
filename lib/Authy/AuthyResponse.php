@@ -83,4 +83,9 @@ class AuthyResponse
     {
         return $this->errors;
     }
+
+    public function message()
+    {
+        return $this->body->message;
+    }
 }

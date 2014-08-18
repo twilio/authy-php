@@ -108,4 +108,21 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $response->ok());
     }
+
+    public function testUserStatusWithInvalidUser()
+    {
+        $response = $this->client->userStatus(0);
+
+        $this->assertEquals(false, $response->ok());
+        $this->assertEquals("User not found.", $response->errors()->message);
+    }
+
+    public function testUserStatusWithValidUser()
+    {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $response = $this->client->userStatus($user->id());
+
+        $this->assertEquals(true, $response->ok());
+    }
+
 }

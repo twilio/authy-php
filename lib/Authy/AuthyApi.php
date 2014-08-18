@@ -146,6 +146,23 @@ class AuthyApi
     }
 
     /**
+     * Gets user status.
+     *
+     * @param string $authy_id User's id stored in your database
+     *
+     * @return AuthyResponse the server response
+     */
+    public function userStatus($authy_id)
+    {
+        $params = array_merge($this->defaultParams());
+        $url = '/protected/json/users/'.urlencode($authy_id).'/status';
+
+        $resp = $this->rest->get($url, $params);
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
      * Return the default parameters.
      *
      * @return array array with the default parameters
