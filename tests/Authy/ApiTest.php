@@ -89,8 +89,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
         $call = $this->client->phoneCall($user->id(), array());
 
-        $this->assertEquals(false, $call->ok());
-        $this->assertEquals("Call was NOT done", $call->errors()->message);
+        $this->assertEquals(true, $call->ok());
+        $this->assertRegExp('/token was sent/i', $call->message());
     }
 
     public function testDeleteUserWithInvalidUser()
@@ -125,4 +125,35 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $response->ok());
     }
 
+    public function testPhoneVerificationStartWithoutVia()
+    {
+        $response = $this->client->PhoneVerificationStart('111-111-1111', '1');
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertRegExp('/Text message sent/i', $response->message());
+    }
+
+    public function testPhoneVerificationStartWithVia()
+    {
+        $response = $this->client->PhoneVerificationStart('111-111-1111', '1', 'call');
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertRegExp('/Call to .* initiated/i', $response->message());
+    }
+
+    public function testPhoneVerificationCheck()
+    {
+        $response = $this->client->PhoneVerificationCheck('111-111-1111', '1', '0000');
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertRegExp('/Verification code is correct/i', $response->message());
+    }
+
+    public function testPhoneInfo()
+    {
+        $response = $this->client->PhoneInfo('111-111-1111', '1');
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertRegExp('/Phone number information/i', $response->message());
+    }
 }

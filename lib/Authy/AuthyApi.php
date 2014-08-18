@@ -163,6 +163,76 @@ class AuthyApi
     }
 
     /**
+     * Starts phone verification. (Sends token to user via sms or call).
+     *
+     * @param string $phone_number User's phone_number stored in your database
+     * @param string $country_code User's phone country code stored in your database
+     * @param string $via The method the token will be sent to user (sms or call)
+     *
+     * @return AuthyResponse the server response
+     */
+    public function phoneVerificationStart($phone_number, $country_code, $via='sms')
+    {
+        $params = array(
+            "phone_number" => $phone_number,
+            "country_code" => $country_code,
+            "via" => $via
+        );
+        $params = array_merge($params, $this->defaultParams());
+        $url = '/protected/json/phones/verification/start';
+
+        $resp = $this->rest->post($url, $params);
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
+     * Phone verification check. (Checks whether the token entered by the user is valid or not).
+     *
+     * @param string $phone_number User's phone_number stored in your database
+     * @param string $country_code User's phone country code stored in your database
+     * @param string $verification_code The verification code entered by the user to be checked
+     *
+     * @return AuthyResponse the server response
+     */
+    public function phoneVerificationCheck($phone_number, $country_code, $verification_code)
+    {
+        $params = array(
+            "phone_number" => $phone_number,
+            "country_code" => $country_code,
+            "verification_code" => $verification_code
+        );
+        $params = array_merge($params, $this->defaultParams());
+        $url = '/protected/json/phones/verification/check';
+
+        $resp = $this->rest->get($url, $params);
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
+     * Phone information. (Checks whether the token entered by the user is valid or not).
+     *
+     * @param string $phone_number User's phone_number stored in your database
+     * @param string $country_code User's phone country code stored in your database
+     *
+     * @return AuthyResponse the server response
+     */
+    public function phoneInfo($phone_number, $country_code)
+    {
+        $params = array(
+            "phone_number" => $phone_number,
+            "country_code" => $country_code
+        );
+        $params = array_merge($params, $this->defaultParams());
+        $url = '/protected/json/phones/info';
+
+        $resp = $this->rest->get($url, $params);
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
      * Return the default parameters.
      *
      * @return array array with the default parameters
