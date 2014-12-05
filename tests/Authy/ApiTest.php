@@ -90,7 +90,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $call = $this->client->phoneCall($user->id(), array());
 
         $this->assertEquals(true, $call->ok());
-        $this->assertRegExp('/token was sent/i', $call->message());
+        $this->assertRegExp('/Call started/i', $call->message());
     }
 
     public function testDeleteUserWithInvalidUser()
