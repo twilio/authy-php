@@ -88,4 +88,14 @@ class AuthyResponse
     {
         return $this->body->message;
     }
+
+    /**
+     * Returns the variable specified in the response if present
+     *
+     * @return value
+     */
+    public function bodyvar($var)
+    {
+        return isset($this->body->$var) ? $this->body->$var: null;
+    }
 }
