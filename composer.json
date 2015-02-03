@@ -7,7 +7,7 @@
     "license": "MIT",
     "require": {
 		"php": ">=5.3.0",
-        "resty/resty": "~0.6.0"
+        "guzzlehttp/guzzle": "~5.0"
     },
     "require-dev": {
         "EHER/PHPUnit": ">= 1.6"
@@ -19,9 +19,9 @@
         }
     ],
     "autoload": {
-      "psr-0": {
-        "Authy": "lib"
-      }
+        "psr-0": {
+            "Authy": "lib"
+        }
     }
 }
 

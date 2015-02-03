@@ -5,4 +5,5 @@ package.xml
 pkg/
 *.tmproj
 vendor/
+.idea/
 composer.lock

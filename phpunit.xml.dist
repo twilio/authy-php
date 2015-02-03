@@ -9,7 +9,7 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src/Authy/</directory>
+            <directory suffix=".php">lib/Authy/</directory>
         </whitelist>
     </filter>
 </phpunit>

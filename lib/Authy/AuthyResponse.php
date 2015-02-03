@@ -37,14 +37,14 @@ class AuthyResponse
     public function __construct($raw_response)
     {
         $this->raw_response = $raw_response;
-        $this->body = $raw_response['body'];
+        $this->body = (! isset($raw_response->body)) ? $raw_response->json(['object' => true]) : $raw_response->body;;
         $this->errors = new \stdClass();
 
         // Handle errors
         if (isset($this->body->errors)) {
             $this->errors = $this->body->errors; // when response is {errors: {}}
             unset($this->body->errors);
-        } elseif ($raw_response['status'] == 400) {
+        } elseif ($raw_response->getStatusCode() == 400) {
             $this->errors = $this->body; // body here is a stdClass
             $this->body = new \stdClass();
         } elseif (!$this->ok() && gettype($this->body) == 'string') {
@@ -61,7 +61,7 @@ class AuthyResponse
      */
     public function ok()
     {
-        return $this->raw_response['status'] == 200;
+        return $this->raw_response->getStatusCode() == 200;
     }
 
     /**
