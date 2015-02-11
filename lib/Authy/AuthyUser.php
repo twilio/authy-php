@@ -32,9 +32,11 @@ class AuthyUser extends AuthyResponse
      */
     public function __construct($raw_response)
     {
-        if (isset($raw_response['body']->user)) {
+        $body = $raw_response->json(['object' => true]);
+
+        if (isset($body->user)) {
             // response is {user: {id: id}}
-            $raw_response['body'] = $raw_response['body']->user;
+            $raw_response->body = $body->user;
         }
 
         parent::__construct($raw_response);

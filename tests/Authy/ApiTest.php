@@ -1,5 +1,7 @@
 <?php
+
 use Authy\AuthyApi;
+
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
     private $client;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ApiClient
  *
@@ -20,13 +21,13 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-namespace Authy;
 
-use Resty\Resty;
+namespace Authy;
 
 class AuthyApi
 {
     const VERSION = '1.3.0';
+
     protected $rest;
     protected $api_key;
     protected $api_url;
@@ -39,9 +40,14 @@ class AuthyApi
      */
     public function __construct($api_key, $api_url = "https://api.authy.com")
     {
-        $this->rest = new Resty();
-        $this->rest->setBaseURL($api_url);
-        $this->rest->setUserAgent("authy-php v".AuthyApi::VERSION);
+        $this->rest = new \GuzzleHttp\Client(array(
+            'base_url' => "{$api_url}/protected/json/",
+            'defaults' => array(
+                'headers'       => array('User-Agent' => 'authy-api v' . AuthyApi::VERSION),
+                'query'         => array('api_key' => $api_key),
+                'exceptions'    => false
+            )
+        ));
 
         $this->api_key = $api_key;
         $this->api_url = $api_url;
@@ -57,14 +63,15 @@ class AuthyApi
      */
     public function registerUser($email, $cellphone, $country_code = 1)
     {
-        $params = $this->defaultParams();
-        $params['user'] = array(
-            "email" => $email,
-            "country_code" => $country_code,
-            "cellphone" => $cellphone
-        );
-
-        $resp = $this->rest->post('/protected/json/users/new', $params);
+        $resp = $this->rest->post('users/new', array(
+            'query' => array(
+                'user' => array(
+                    "email"        => $email,
+                    "cellphone"    => $cellphone,
+                    "country_code" => $country_code
+                )
+            )
+        ));
 
         return new AuthyUser($resp);
     }
@@ -80,13 +87,18 @@ class AuthyApi
      */
     public function verifyToken($authy_id, $token, $opts = array())
     {
-        $params = array_merge($this->defaultParams(), $opts);
-        if (!array_key_exists("force", $params)) {
+        $params = [];
+
+        if (! array_key_exists("force", $opts)) {
             $params["force"] = "true";
         }
-        $url = '/protected/json/verify/'. urlencode($token)
-                                        .'/'. urlencode($authy_id);
-        $resp = $this->rest->get($url, $params);
+
+        $token = urlencode($token);
+        $authy_id = urlencode($authy_id);
+
+        $resp = $this->rest->get("verify/{$token}/{$authy_id}", array(
+            'query' => $params
+        ));
 
         return new AuthyResponse($resp);
     }
@@ -101,10 +113,10 @@ class AuthyApi
      */
     public function requestSms($authy_id, $opts = array())
     {
-        $params = array_merge($this->defaultParams(), $opts);
-        $url = '/protected/json/sms/'.urlencode($authy_id);
-
-        $resp = $this->rest->get($url, $params);
+        $authy_id = urlencode($authy_id);
+        $resp = $this->rest->get("sms/{$authy_id}", array(
+            'query' => $opts
+        ));
 
         return new AuthyResponse($resp);
     }
@@ -120,10 +132,10 @@ class AuthyApi
      */
     public function phoneCall($authy_id, $opts = array())
     {
-        $params = array_merge($this->defaultParams(), $opts);
-        $url = '/protected/json/call/'.urlencode($authy_id);
-
-        $resp = $this->rest->get($url, $params);
+        $authy_id = urlencode($authy_id);
+        $resp = $this->rest->get("call/{$authy_id}", array(
+            'query' => $opts
+        ));
 
         return new AuthyResponse($resp);
     }
@@ -137,11 +149,8 @@ class AuthyApi
      */
     public function deleteUser($authy_id)
     {
-        $params = array_merge($this->defaultParams());
-        $url = '/protected/json/users/delete/'.urlencode($authy_id);
-
-        $resp = $this->rest->post($url, $params);
-
+        $authy_id = urlencode($authy_id);
+        $resp = $this->rest->post("users/delete/{$authy_id}");
         return new AuthyResponse($resp);
     }
 
@@ -154,11 +163,8 @@ class AuthyApi
      */
     public function userStatus($authy_id)
     {
-        $params = array_merge($this->defaultParams());
-        $url = '/protected/json/users/'.urlencode($authy_id).'/status';
-
-        $resp = $this->rest->get($url, $params);
-
+        $authy_id = urlencode($authy_id);
+        $resp = $this->rest->get("users/{$authy_id}/status");
         return new AuthyResponse($resp);
     }
 
@@ -173,15 +179,13 @@ class AuthyApi
      */
     public function phoneVerificationStart($phone_number, $country_code, $via='sms')
     {
-        $params = array(
-            "phone_number" => $phone_number,
-            "country_code" => $country_code,
-            "via" => $via
-        );
-        $params = array_merge($params, $this->defaultParams());
-        $url = '/protected/json/phones/verification/start';
-
-        $resp = $this->rest->post($url, $params);
+        $resp = $this->rest->post("phones/verification/start", array(
+            'query' => array(
+                "phone_number" => $phone_number,
+                "country_code" => $country_code,
+                "via"          => $via
+            )
+        ));
 
         return new AuthyResponse($resp);
     }
@@ -197,15 +201,13 @@ class AuthyApi
      */
     public function phoneVerificationCheck($phone_number, $country_code, $verification_code)
     {
-        $params = array(
-            "phone_number" => $phone_number,
-            "country_code" => $country_code,
-            "verification_code" => $verification_code
-        );
-        $params = array_merge($params, $this->defaultParams());
-        $url = '/protected/json/phones/verification/check';
-
-        $resp = $this->rest->get($url, $params);
+        $resp = $this->rest->get("phones/verification/check", array(
+            'query' => array(
+                "phone_number"      => $phone_number,
+                "country_code"      => $country_code,
+                "verification_code" => $verification_code
+            )
+        ));
 
         return new AuthyResponse($resp);
     }
@@ -220,25 +222,13 @@ class AuthyApi
      */
     public function phoneInfo($phone_number, $country_code)
     {
-        $params = array(
-            "phone_number" => $phone_number,
-            "country_code" => $country_code
-        );
-        $params = array_merge($params, $this->defaultParams());
-        $url = '/protected/json/phones/info';
-
-        $resp = $this->rest->get($url, $params);
+        $resp = $this->rest->get("phones/info", array(
+            'query' => array(
+                "phone_number" => $phone_number,
+                "country_code" => $country_code
+            )
+        ));
 
         return new AuthyResponse($resp);
-    }
-
-    /**
-     * Return the default parameters.
-     *
-     * @return array array with the default parameters
-     */
-    protected function defaultParams()
-    {
-        return array("api_key" => $this->api_key);
     }
 }
