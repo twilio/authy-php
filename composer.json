@@ -6,7 +6,7 @@
     "homepage": "https://github.com/authy/authy-php",
     "license": "MIT",
     "require": {
-		"php": ">=5.3.0",
+        "php": ">=5.3.0",
         "guzzlehttp/guzzle": "~5.0"
     },
     "require-dev": {

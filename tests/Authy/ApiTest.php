@@ -1,6 +1,7 @@
 <?php
 
 use Authy\AuthyApi;
+use Authy\AuthyFormatException;
 
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -58,8 +59,63 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testVerifyTokenWithInvalidToken()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $token = $this->client->verifyToken($user->id(), $this->invalid_token);
+        $this->assertEquals(false, $token->ok());
+    }
+
+    public function testVerifyTokenWithValidToken()
+    {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
         $token = $this->client->verifyToken($user->id(), $this->valid_token);
         $this->assertEquals(true, $token->ok());
+    }
+
+    public function testVerifyTokenWithNonNumericToken()
+    {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        try {
+            $token = $this->client->verifyToken($user->id(), '123456/1#');
+        } catch (AuthyFormatException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid Token. Only digits accepted.');
+            return;
+        } 
+        $this->fail('AuthyFormatException has not been raised.');            
+    }
+
+    public function testVerifyTokenWithNonNumericAuthyId()
+    {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        try {
+            $token = $this->client->verifyToken('123456/1#', $this->valid_token);
+        } catch (AuthyFormatException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid Authy id. Only digits accepted.');
+            return;
+        } 
+        $this->fail('AuthyFormatException has not been raised.');            
+    }
+
+    public function testVerifyTokenWithSmallerToken()
+    {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        try {
+            $token = $this->client->verifyToken($user->id(), '12345');
+        } catch (AuthyFormatException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
+            return;
+        } 
+        $this->fail('AuthyFormatException has not been raised.');            
+    }
+
+    public function testVerifyTokenWithLongerToken()
+    {
+        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        try {
+            $token = $this->client->verifyToken($user->id(), '12345678901');
+        } catch (AuthyFormatException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
+            return;
+        } 
+        $this->fail('AuthyFormatException has not been raised.');            
     }
 
     public function testRequestSmsWithInvalidUser()

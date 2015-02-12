@@ -43,7 +43,7 @@ class AuthyApi
         $this->rest = new \GuzzleHttp\Client(array(
             'base_url' => "{$api_url}/protected/json/",
             'defaults' => array(
-                'headers'       => array('User-Agent' => 'authy-api v' . AuthyApi::VERSION),
+                'headers'       => array('User-Agent' => $this->__getUserAgent() ),
                 'query'         => array('api_key' => $api_key),
                 'exceptions'    => false
             )
@@ -95,12 +95,13 @@ class AuthyApi
 
         $token = urlencode($token);
         $authy_id = urlencode($authy_id);
+        $this->__validateVerify($token, $authy_id);
 
         $resp = $this->rest->get("verify/{$token}/{$authy_id}", array(
             'query' => $params
         ));
 
-        return new AuthyResponse($resp);
+        return new AuthyToken($resp);
     }
 
     /**
@@ -231,4 +232,35 @@ class AuthyApi
 
         return new AuthyResponse($resp);
     }
+
+    private function __getUserAgent()
+    {
+        return sprintf(
+            'AuthyPHP/%s (%s-%s-%s; PHP %s)', 
+            AuthyApi::VERSION, 
+            php_uname('s'), 
+            php_uname('r'), 
+            php_uname('m'), 
+            phpversion()
+        );
+    }
+
+    private function __validateVerify($token, $authy_id) 
+    {
+        $this->__validate_digit($token, "Invalid Token. Only digits accepted.");
+        $this->__validate_digit($authy_id, "Invalid Authy id. Only digits accepted.");
+        $length = strlen((string)$token);
+        if( $length < 6 or $length > 10 ) {
+            throw new AuthyFormatException("Invalid Token. Unexpected length.");                
+        }
+    }
+
+    private function __validate_digit($var, $message) 
+    {
+        if( !is_int($var) && !is_numeric($var) ) {
+            throw new AuthyFormatException($message);
+        }
+    }
+
+
 }
