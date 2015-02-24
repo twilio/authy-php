@@ -34,7 +34,7 @@ class AuthyToken extends AuthyResponse
     public function ok()
     {
         if( parent::ok() ){
-            return $this->bodyvar('message') == 'Token is valid.';
+            return $this->bodyvar('token') == 'is valid';
         }
         return false;
     }
