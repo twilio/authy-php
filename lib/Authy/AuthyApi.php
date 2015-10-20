@@ -178,16 +178,18 @@ class AuthyApi
      *
      * @return AuthyResponse the server response
      */
-    public function phoneVerificationStart($phone_number, $country_code, $via='sms', $locale='en')
+    public function phoneVerificationStart($phone_number, $country_code, $via='sms', $locale=null)
     {
-        $resp = $this->rest->post("phones/verification/start", array(
-            'query' => array(
-                "phone_number" => $phone_number,
-                "country_code" => $country_code,
-                "via"          => $via,
-                "locale"       => $locale
-            )
-        ));
+        $query = array(
+            "phone_number" => $phone_number,
+            "country_code" => $country_code,
+            "via"          => $via
+        );
+
+        if ($locale != null)
+          $query["locale"] = $locale;
+
+        $resp = $this->rest->post("phones/verification/start", array('query' => $query));
 
         return new AuthyResponse($resp);
     }
