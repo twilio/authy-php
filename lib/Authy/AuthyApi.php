@@ -178,15 +178,18 @@ class AuthyApi
      *
      * @return AuthyResponse the server response
      */
-    public function phoneVerificationStart($phone_number, $country_code, $via='sms')
+    public function phoneVerificationStart($phone_number, $country_code, $via='sms', $locale=null)
     {
-        $resp = $this->rest->post("phones/verification/start", array(
-            'query' => array(
-                "phone_number" => $phone_number,
-                "country_code" => $country_code,
-                "via"          => $via
-            )
-        ));
+        $query = array(
+            "phone_number" => $phone_number,
+            "country_code" => $country_code,
+            "via"          => $via
+        );
+
+        if ($locale != null)
+          $query["locale"] = $locale;
+
+        $resp = $this->rest->post("phones/verification/start", array('query' => $query));
 
         return new AuthyResponse($resp);
     }
@@ -236,26 +239,26 @@ class AuthyApi
     private function __getUserAgent()
     {
         return sprintf(
-            'AuthyPHP/%s (%s-%s-%s; PHP %s)', 
-            AuthyApi::VERSION, 
-            php_uname('s'), 
-            php_uname('r'), 
-            php_uname('m'), 
+            'AuthyPHP/%s (%s-%s-%s; PHP %s)',
+            AuthyApi::VERSION,
+            php_uname('s'),
+            php_uname('r'),
+            php_uname('m'),
             phpversion()
         );
     }
 
-    private function __validateVerify($token, $authy_id) 
+    private function __validateVerify($token, $authy_id)
     {
         $this->__validate_digit($token, "Invalid Token. Only digits accepted.");
         $this->__validate_digit($authy_id, "Invalid Authy id. Only digits accepted.");
         $length = strlen((string)$token);
         if( $length < 6 or $length > 10 ) {
-            throw new AuthyFormatException("Invalid Token. Unexpected length.");                
+            throw new AuthyFormatException("Invalid Token. Unexpected length.");
         }
     }
 
-    private function __validate_digit($var, $message) 
+    private function __validate_digit($var, $message)
     {
         if( !is_int($var) && !is_numeric($var) ) {
             throw new AuthyFormatException($message);

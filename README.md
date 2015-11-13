@@ -114,6 +114,13 @@ In order to start a phone verification, we ask the API to send a token to the us
 
     $authy_api->phoneVerificationStart('111-111-1111', '1', 'sms');
 
+Optionally you can specify the language that you prefer the phone verification message to be sent. Supported
+languages include: English (`en`), Spanish (`es`), Portuguese (`pt`), German (`de`), French (`fr`) and
+Italian (`it`). If not specified, English will be used.
+
+    $authy_api->phoneVerificationStart('111-111-1111', '1', 'sms', 'es');
+    // This will send a message in spanish
+
 ### Phone Verification Check
 
 Once you get the verification from user, you can check if it's valid with:
