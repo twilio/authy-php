@@ -138,8 +138,6 @@ If you want to gather additional information about user phone, use phones info.
 
 You can find the full API documentation in the [official documentation](https://docs.authy.com) page.
 
+## Copyright
 
-
-
-
-
+Copyright (c) 2011-2020 Authy Inc.
