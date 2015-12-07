@@ -41,12 +41,9 @@ class AuthyApi
     public function __construct($api_key, $api_url = "https://api.authy.com")
     {
         $this->rest = new \GuzzleHttp\Client(array(
-            'base_url' => "{$api_url}/protected/json/",
-            'defaults' => array(
-                'headers'       => array('User-Agent' => $this->__getUserAgent() ),
-                'query'         => array('api_key' => $api_key),
-                'exceptions'    => false
-            )
+            'base_uri' => $api_url . '/protected/json/',
+            'headers' => array('User-Agent' => $this->__getUserAgent() ),
+            'http_errors' => false,
         ));
 
         $this->api_key = $api_key;
@@ -63,7 +60,7 @@ class AuthyApi
      */
     public function registerUser($email, $cellphone, $country_code = 1)
     {
-        $resp = $this->rest->post('users/new', array(
+        $resp = $this->post('users/new', array(
             'query' => array(
                 'user' => array(
                     "email"        => $email,
@@ -97,7 +94,7 @@ class AuthyApi
         $authy_id = urlencode($authy_id);
         $this->__validateVerify($token, $authy_id);
 
-        $resp = $this->rest->get("verify/{$token}/{$authy_id}", array(
+        $resp = $this->get("verify/{$token}/{$authy_id}", array(
             'query' => $params
         ));
 
@@ -115,7 +112,7 @@ class AuthyApi
     public function requestSms($authy_id, $opts = array())
     {
         $authy_id = urlencode($authy_id);
-        $resp = $this->rest->get("sms/{$authy_id}", array(
+        $resp = $this->get("sms/{$authy_id}", array(
             'query' => $opts
         ));
 
@@ -134,7 +131,7 @@ class AuthyApi
     public function phoneCall($authy_id, $opts = array())
     {
         $authy_id = urlencode($authy_id);
-        $resp = $this->rest->get("call/{$authy_id}", array(
+        $resp = $this->get("call/{$authy_id}", array(
             'query' => $opts
         ));
 
@@ -151,7 +148,7 @@ class AuthyApi
     public function deleteUser($authy_id)
     {
         $authy_id = urlencode($authy_id);
-        $resp = $this->rest->post("users/delete/{$authy_id}");
+        $resp = $this->post("users/delete/{$authy_id}");
         return new AuthyResponse($resp);
     }
 
@@ -165,7 +162,7 @@ class AuthyApi
     public function userStatus($authy_id)
     {
         $authy_id = urlencode($authy_id);
-        $resp = $this->rest->get("users/{$authy_id}/status");
+        $resp = $this->get("users/{$authy_id}/status");
         return new AuthyResponse($resp);
     }
 
@@ -189,7 +186,7 @@ class AuthyApi
         if ($locale != null)
           $query["locale"] = $locale;
 
-        $resp = $this->rest->post("phones/verification/start", array('query' => $query));
+        $resp = $this->post("phones/verification/start", array('query' => $query));
 
         return new AuthyResponse($resp);
     }
@@ -205,7 +202,7 @@ class AuthyApi
      */
     public function phoneVerificationCheck($phone_number, $country_code, $verification_code)
     {
-        $resp = $this->rest->get("phones/verification/check", array(
+        $resp = $this->get("phones/verification/check", array(
             'query' => array(
                 "phone_number"      => $phone_number,
                 "country_code"      => $country_code,
@@ -226,7 +223,7 @@ class AuthyApi
      */
     public function phoneInfo($phone_number, $country_code)
     {
-        $resp = $this->rest->get("phones/info", array(
+        $resp = $this->get("phones/info", array(
             'query' => array(
                 "phone_number" => $phone_number,
                 "country_code" => $country_code
@@ -234,6 +231,25 @@ class AuthyApi
         ));
 
         return new AuthyResponse($resp);
+    }
+
+    private function get($uri, array $options = [])
+    {
+        return $this->rest->get($uri, $this->getRequestOptions($options));
+    }
+
+    private function post($uri, array $options = [])
+    {
+        return $this->rest->post($uri, $this->getRequestOptions($options));
+    }
+
+    private function getRequestOptions(array $options)
+    {
+        $query = array_key_exists('query', $options) ? $options['query'] : array();
+        $query = array_merge(array('api_key' => $this->api_key), $query);
+        $options['query'] = $query;
+
+        return $options;
     }
 
     private function __getUserAgent()
