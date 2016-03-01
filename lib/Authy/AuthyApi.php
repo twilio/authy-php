@@ -178,16 +178,22 @@ class AuthyApi
      *
      * @return AuthyResponse the server response
      */
-    public function phoneVerificationStart($phone_number, $country_code, $via='sms', $locale=null)
+    public function phoneVerificationStart($phone_number, $country_code, $via='sms', $locale=null, $custom_message=null)
     {
         $query = array(
             "phone_number" => $phone_number,
             "country_code" => $country_code,
             "via"          => $via
         );
-
+        
+        if ($custom_message != null)
+          $query['custom_message'] = $custom_message;
+          
         if ($locale != null)
           $query["locale"] = $locale;
+          
+        if ($via == 'call' && $custom_message != null && $local == null)
+          throw new AuthyFormatException('If the via method is set to call and you are using a custom_message the locale is required');
 
         $resp = $this->rest->post("phones/verification/start", array('query' => $query));
 
