@@ -5,10 +5,24 @@ use Authy\AuthyFormatException;
 
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var AuthyApi
+     */
     private $client;
+
+    /**
+     * @var string
+     */
     private $invalid_token;
+
+    /**
+     * @var string
+     */
     private $valid_token;
 
+    /**
+     *
+     */
     public function setUp()
     {
         $this->client = new AuthyApi('bf12974d70818a08199d17d5e2bae630', 'http://sandbox-api.authy.com');
@@ -16,6 +30,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->valid_token = '0000000';
     }
 
+    /**
+     *
+     */
     public function testCreateUserWithValidData()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -24,6 +41,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty((array) $user->errors());
     }
 
+    /**
+     *
+     */
     public function testCreateUserWithInvalidData()
     {
         $user = $this->client->registerUser('user@example.com', '', 1);
@@ -39,6 +59,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("is invalid", $errors["cellphone"]);
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithValidUser()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -47,6 +70,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $token->ok());
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithInvalidUser()
     {
         $token = $this->client->verifyToken(0, $this->invalid_token);
@@ -56,6 +82,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User doesn't exist.", $token->errors()->message);
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithInvalidToken()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -63,6 +92,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $token->ok());
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithValidToken()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -70,6 +102,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $token->ok());
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithNonNumericToken()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -82,6 +117,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');            
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithNonNumericAuthyId()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -94,6 +132,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');            
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithSmallerToken()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -106,6 +147,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');            
     }
 
+    /**
+     *
+     */
     public function testVerifyTokenWithLongerToken()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -118,6 +162,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');            
     }
 
+    /**
+     *
+     */
     public function testRequestSmsWithInvalidUser()
     {
         $sms = $this->client->requestSms(0, array("force" => "true"));
@@ -125,6 +172,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $sms->ok());
     }
 
+    /**
+     *
+     */
     public function testRequestSmsWithValidUser()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -134,6 +184,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         //$this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
     }
 
+    /**
+     *
+     */
     public function testPhonceCallWithInvalidUser()
     {
         $call = $this->client->phoneCall(0, array());
@@ -142,6 +195,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User not found.", $call->errors()->message);
     }
 
+    /**
+     *
+     */
     public function testPhonceCallWithValidUser()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -151,6 +207,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Call started/i', $call->message());
     }
 
+    /**
+     *
+     */
     public function testDeleteUserWithInvalidUser()
     {
         $response = $this->client->deleteUser(0);
@@ -159,6 +218,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User not found.", $response->errors()->message);
     }
 
+    /**
+     *
+     */
     public function testDeleteUserWithValidUser()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -167,6 +229,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $response->ok());
     }
 
+    /**
+     *
+     */
     public function testUserStatusWithInvalidUser()
     {
         $response = $this->client->userStatus(0);
@@ -175,6 +240,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User not found.", $response->errors()->message);
     }
 
+    /**
+     *
+     */
     public function testUserStatusWithValidUser()
     {
         $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
@@ -183,6 +251,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $response->ok());
     }
 
+    /**
+     *
+     */
     public function testPhoneVerificationStartWithoutVia()
     {
         $response = $this->client->PhoneVerificationStart('111-111-1111', '1');
@@ -191,6 +262,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Text message sent/i', $response->message());
     }
 
+    /**
+     *
+     */
     public function testPhoneVerificationStartWithVia()
     {
         $response = $this->client->PhoneVerificationStart('111-111-1111', '1', 'call');
@@ -199,6 +273,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Call to .* initiated/i', $response->message());
     }
 
+    /**
+     *
+     */
     public function testPhoneVerificationCheck()
     {
         $response = $this->client->PhoneVerificationCheck('111-111-1111', '1', '0000');
@@ -207,6 +284,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Verification code is correct/i', $response->message());
     }
 
+    /**
+     *
+     */
     public function testPhoneInfo()
     {
         $response = $this->client->PhoneInfo('111-111-1111', '1');
@@ -214,4 +294,5 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $response->ok());
         $this->assertRegExp('/Phone number information/i', $response->message());
     }
+
 }
