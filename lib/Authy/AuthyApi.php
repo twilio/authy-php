@@ -237,6 +237,43 @@ class AuthyApi
     }
 
     /**
+     * Create a new approval request for a user
+     *
+     * @param string $authy_id User's id stored in your database
+     * @param string $message
+     * @param array  $opts details, hidden_details, logos, seconds_to_expire
+     *
+     * @return AuthyResponse
+     *
+     * @see http://docs.authy.com/onetouch.html#create-approvalrequest
+     */
+    public function createApprovalRequest($authy_id, $message, $opts = array())
+    {
+        $authy_id = urlencode($authy_id);
+        $body = array_replace_recursive(['message' => $message], $opts);
+        $resp = $this->rest->post("/onetouch/json/users/{$authy_id}/approval_requests", ['body' => $body]);
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
+     * Check the status of an approval request
+     *
+     * @param string $request_uuid The UUID of the approval request you want to check
+     *
+     * @return AuthyResponse
+     *
+     * @see http://docs.authy.com/onetouch.html#check-approvalrequest-status
+     */
+    public function getApprovalRequest($request_uuid)
+    {
+        $request_uuid = urlencode($request_uuid);
+        $resp = $this->rest->get("/onetouch/json/approval_requests/{$request_uuid}");
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
      * @return mixed
      */
     private function __getUserAgent()
