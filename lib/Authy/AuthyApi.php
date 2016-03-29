@@ -236,6 +236,9 @@ class AuthyApi
         return new AuthyResponse($resp);
     }
 
+    /**
+     * @return mixed
+     */
     private function __getUserAgent()
     {
         return sprintf(
@@ -248,6 +251,12 @@ class AuthyApi
         );
     }
 
+    /**
+     * @param $token
+     * @param $authy_id
+     *
+     * @throws AuthyFormatException
+     */
     private function __validateVerify($token, $authy_id)
     {
         $this->__validate_digit($token, "Invalid Token. Only digits accepted.");
@@ -258,6 +267,12 @@ class AuthyApi
         }
     }
 
+    /**
+     * @param $var
+     * @param $message
+     *
+     * @throws AuthyFormatException
+     */
     private function __validate_digit($var, $message)
     {
         if( !is_int($var) && !is_numeric($var) ) {
