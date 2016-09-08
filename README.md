@@ -133,6 +133,13 @@ If you want to gather additional information about user phone, use phones info.
 
     $authy_api->phoneInfo('111-111-1111', '1');
 
+## Tests
+
+You will need to install composer `https://getcomposer.org/download/`
+and install dependencies with `composer install --no-dev`. Also
+You will need to install phpunit `https://phpunit.de/manual/current/en/installation.html`
+
+Then you can run test by executing this command `make`
 
 ### More…
 

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/TestHelper.php';
 
 use Authy\AuthyApi;
 use Authy\AuthyFormatException;
@@ -11,7 +12,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->client = new AuthyApi('bf12974d70818a08199d17d5e2bae630', 'http://sandbox-api.authy.com');
+        $this->client = new AuthyApi($GLOBALS['test_api_key'], $GLOBALS['test_api_host']);
         $this->invalid_token = '1234567';
         $this->valid_token = '0000000';
     }
@@ -35,7 +36,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey("message", $errors);
         $this->assertArrayHasKey("cellphone", $errors);
-        $this->assertEquals("User was not valid.", $errors["message"]);
+        $this->assertEquals("User was not valid", $errors["message"]);
         $this->assertEquals("is invalid", $errors["cellphone"]);
     }
 
@@ -53,7 +54,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(false, $token->ok());
         $this->assertNotEmpty((array) $token->errors());
-        $this->assertEquals("User doesn't exist.", $token->errors()->message);
+        $this->assertEquals("User doesn't exist", $token->errors()->message);
     }
 
     public function testVerifyTokenWithInvalidToken()
