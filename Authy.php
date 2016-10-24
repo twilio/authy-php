@@ -7,5 +7,3 @@ foreach($paths as $path){
 }
 
 class Authy_Api extends Authy\AuthyApi {}
-
-?>
