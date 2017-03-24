@@ -68,7 +68,10 @@ class AuthyApi
                     "cellphone"    => $cellphone,
                     "country_code" => $country_code
                 )
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyUser($resp);
@@ -98,7 +101,10 @@ class AuthyApi
         $this->__validateVerify($token, $authy_id);
 
         $resp = $this->rest->get("verify/{$token}/{$authy_id}", array(
-            'query' => $params
+            'query' => $params,
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyToken($resp);
@@ -118,7 +124,10 @@ class AuthyApi
         $resp = $this->rest->get("sms/{$authy_id}", array(
             'query' => array_merge($opts, array(
                 'api_key' => $this->api_key
-            ))
+            )),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
@@ -139,7 +148,10 @@ class AuthyApi
         $resp = $this->rest->get("call/{$authy_id}", array(
             'query' => array_merge($opts, array(
                 'api_key' => $this->api_key
-            ))
+            )),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
@@ -158,7 +170,10 @@ class AuthyApi
         $resp = $this->rest->post("users/delete/{$authy_id}", array(
             'query' => array(
                 'api_key'   => $this->api_key
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
         return new AuthyResponse($resp);
     }
@@ -176,7 +191,10 @@ class AuthyApi
         $resp = $this->rest->get("users/{$authy_id}/status", array(
             'query' => array(
                 'api_key'   => $this->api_key
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
         return new AuthyResponse($resp);
     }
@@ -198,7 +216,10 @@ class AuthyApi
                 "phone_number" => $phone_number,
                 "country_code" => $country_code,
                 "via"          => $via
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
@@ -221,7 +242,10 @@ class AuthyApi
                 "phone_number"      => $phone_number,
                 "country_code"      => $country_code,
                 "verification_code" => $verification_code
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
@@ -242,7 +266,10 @@ class AuthyApi
                 'api_key'      => $this->api_key,
                 "phone_number" => $phone_number,
                 "country_code" => $country_code
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
