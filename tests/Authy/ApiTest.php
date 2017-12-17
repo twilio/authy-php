@@ -79,8 +79,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Token. Only digits accepted.');
             return;
-        } 
-        $this->fail('AuthyFormatException has not been raised.');            
+        }
+        $this->fail('AuthyFormatException has not been raised.');
     }
 
     public function testVerifyTokenWithNonNumericAuthyId()
@@ -91,8 +91,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Authy id. Only digits accepted.');
             return;
-        } 
-        $this->fail('AuthyFormatException has not been raised.');            
+        }
+        $this->fail('AuthyFormatException has not been raised.');
     }
 
     public function testVerifyTokenWithSmallerToken()
@@ -103,8 +103,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
             return;
-        } 
-        $this->fail('AuthyFormatException has not been raised.');            
+        }
+        $this->fail('AuthyFormatException has not been raised.');
     }
 
     public function testVerifyTokenWithLongerToken()
@@ -115,8 +115,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
             return;
-        } 
-        $this->fail('AuthyFormatException has not been raised.');            
+        }
+        $this->fail('AuthyFormatException has not been raised.');
     }
 
     public function testRequestSmsWithInvalidUser()
