@@ -141,6 +141,19 @@ You will need to install phpunit `https://phpunit.de/manual/current/en/installat
 
 Then you can run test by executing this command `make`
 
+## Contribute
+You can use docker to run tests and develop locally without the need to install the dependencies directly in your machine:
+
+```
+git clone git@github.com:authy/authy-php.git
+cd authy-php
+make docker-build # Creates the docker image
+make docker-deps  # Install dependencies (in the `vendor` directory)
+make docker-test  # Runs the tests
+```
+
+To contribute, just make your changes and send a Pull Request to the authy/authy-php repo.
+
 ### More…
 
 You can find the full API documentation in the [official documentation](https://docs.authy.com) page.
