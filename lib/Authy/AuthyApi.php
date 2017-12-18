@@ -41,11 +41,9 @@ class AuthyApi
     public function __construct($api_key, $api_url = "https://api.authy.com")
     {
         $this->rest = new \GuzzleHttp\Client(array(
-            'base_url' => "{$api_url}/protected/json/",
-            'defaults' => array(
-                'headers'       => array('User-Agent' => $this->__getUserAgent(), 'X-Authy-API-Key' => $api_key ),
-                'exceptions'    => false
-            )
+            'base_uri'      => "{$api_url}/protected/json/",
+            'headers'       => array('User-Agent' => $this->__getUserAgent() ),
+            'http_errors'   => false
         ));
 
         $this->api_key = $api_key;
@@ -64,12 +62,16 @@ class AuthyApi
     {
         $resp = $this->rest->post('users/new', array(
             'query' => array(
+                'api_key' => $this->api_key,
                 'user' => array(
                     "email"        => $email,
                     "cellphone"    => $cellphone,
                     "country_code" => $country_code
                 )
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyUser($resp);
@@ -86,7 +88,9 @@ class AuthyApi
      */
     public function verifyToken($authy_id, $token, $opts = array())
     {
-        $params = [];
+        $params = [
+            'api_key' => $this->api_key
+        ];
 
         if (! array_key_exists("force", $opts)) {
             $params["force"] = "true";
@@ -97,7 +101,10 @@ class AuthyApi
         $this->__validateVerify($token, $authy_id);
 
         $resp = $this->rest->get("verify/{$token}/{$authy_id}", array(
-            'query' => $params
+            'query' => $params,
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyToken($resp);
@@ -115,7 +122,12 @@ class AuthyApi
     {
         $authy_id = urlencode($authy_id);
         $resp = $this->rest->get("sms/{$authy_id}", array(
-            'query' => $opts
+            'query' => array_merge($opts, array(
+                'api_key' => $this->api_key
+            )),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
@@ -134,7 +146,12 @@ class AuthyApi
     {
         $authy_id = urlencode($authy_id);
         $resp = $this->rest->get("call/{$authy_id}", array(
-            'query' => $opts
+            'query' => array_merge($opts, array(
+                'api_key' => $this->api_key
+            )),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
@@ -150,7 +167,14 @@ class AuthyApi
     public function deleteUser($authy_id)
     {
         $authy_id = urlencode($authy_id);
-        $resp = $this->rest->post("users/delete/{$authy_id}");
+        $resp = $this->rest->post("users/delete/{$authy_id}", array(
+            'query' => array(
+                'api_key'   => $this->api_key
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
+        ));
         return new AuthyResponse($resp);
     }
 
@@ -164,7 +188,14 @@ class AuthyApi
     public function userStatus($authy_id)
     {
         $authy_id = urlencode($authy_id);
-        $resp = $this->rest->get("users/{$authy_id}/status");
+        $resp = $this->rest->get("users/{$authy_id}/status", array(
+            'query' => array(
+                'api_key'   => $this->api_key
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
+        ));
         return new AuthyResponse($resp);
     }
 
@@ -177,18 +208,19 @@ class AuthyApi
      *
      * @return AuthyResponse the server response
      */
-    public function phoneVerificationStart($phone_number, $country_code, $via='sms', $locale=null)
+    public function phoneVerificationStart($phone_number, $country_code, $via='sms')
     {
-        $query = array(
-            "phone_number" => $phone_number,
-            "country_code" => $country_code,
-            "via"          => $via
-        );
-
-        if ($locale != null)
-          $query["locale"] = $locale;
-
-        $resp = $this->rest->post("phones/verification/start", array('query' => $query));
+        $resp = $this->rest->post("phones/verification/start", array(
+            'query' => array(
+                'api_key'      => $this->api_key,
+                "phone_number" => $phone_number,
+                "country_code" => $country_code,
+                "via"          => $via
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
+        ));
 
         return new AuthyResponse($resp);
     }
@@ -206,10 +238,14 @@ class AuthyApi
     {
         $resp = $this->rest->get("phones/verification/check", array(
             'query' => array(
+                'api_key'           => $this->api_key,
                 "phone_number"      => $phone_number,
                 "country_code"      => $country_code,
                 "verification_code" => $verification_code
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
@@ -227,9 +263,13 @@ class AuthyApi
     {
         $resp = $this->rest->get("phones/info", array(
             'query' => array(
+                'api_key'      => $this->api_key,
                 "phone_number" => $phone_number,
                 "country_code" => $country_code
-            )
+            ),
+            'curl' => [
+                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+            ]
         ));
 
         return new AuthyResponse($resp);
