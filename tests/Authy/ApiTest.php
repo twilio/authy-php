@@ -3,23 +3,27 @@ require_once __DIR__.'/TestHelper.php';
 
 use Authy\AuthyApi;
 use Authy\AuthyFormatException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Stream\Stream;
 
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
-    private $client;
     private $invalid_token;
     private $valid_token;
 
     public function setUp()
     {
-        $this->client = new AuthyApi($GLOBALS['test_api_key'], $GLOBALS['test_api_host']);
         $this->invalid_token = '1234567';
         $this->valid_token = '0000000';
     }
 
     public function testCreateUserWithValidData()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
 
         $this->assertEquals("integer", gettype($user->id()));
         $this->assertEmpty((array) $user->errors());
@@ -27,7 +31,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateUserWithInvalidData()
     {
-        $user = $this->client->registerUser('user@example.com', '', 1);
+        $mock_client = $this->mockClient([[400, '{ "errors": { "message": "User was not valid", "email":"is invalid", "cellphone":"is invalid" } }']]);
+        $user = $mock_client->registerUser('user@example.com', '', 1);
 
         $this->assertEquals("NULL", gettype($user->id()));
         $this->assertNotEmpty((array) $user->errors());
@@ -42,15 +47,21 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testVerifyTokenWithValidUser()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $token = $this->client->verifyToken($user->id(), $this->invalid_token);
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [400, '{ "errors": { "message": "token invalid" } }']
+        ]);
+
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $token = $mock_client->verifyToken($user->id(), $this->invalid_token);
 
         $this->assertEquals(false, $token->ok());
     }
 
     public function testVerifyTokenWithInvalidUser()
     {
-        $token = $this->client->verifyToken(0, $this->invalid_token);
+        $mock_client = $this->mockClient([[404, '{"errors": {"message": "User doesn\'t exist"}}']]);
+        $token = $mock_client->verifyToken(0, $this->invalid_token);
 
         $this->assertEquals(false, $token->ok());
         $this->assertNotEmpty((array) $token->errors());
@@ -59,23 +70,32 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testVerifyTokenWithInvalidToken()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $token = $this->client->verifyToken($user->id(), $this->invalid_token);
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [400, '{ "token": "is invalid" }']
+        ]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $token = $mock_client->verifyToken($user->id(), $this->invalid_token);
         $this->assertEquals(false, $token->ok());
     }
 
     public function testVerifyTokenWithValidToken()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $token = $this->client->verifyToken($user->id(), $this->valid_token);
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [200, '{ "token": "is valid" }']
+        ]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $token = $mock_client->verifyToken($user->id(), $this->valid_token);
         $this->assertEquals(true, $token->ok());
     }
 
     public function testVerifyTokenWithNonNumericToken()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
         try {
-            $token = $this->client->verifyToken($user->id(), '123456/1#');
+            $token = $mock_client->verifyToken($user->id(), '123456/1#');
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Token. Only digits accepted.');
             return;
@@ -85,9 +105,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testVerifyTokenWithNonNumericAuthyId()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
         try {
-            $token = $this->client->verifyToken('123456/1#', $this->valid_token);
+            $token = $mock_client->verifyToken('123456/1#', $this->valid_token);
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Authy id. Only digits accepted.');
             return;
@@ -97,9 +118,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testVerifyTokenWithSmallerToken()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
         try {
-            $token = $this->client->verifyToken($user->id(), '12345');
+            $token = $mock_client->verifyToken($user->id(), '12345');
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
             return;
@@ -109,9 +131,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testVerifyTokenWithLongerToken()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
+        $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
         try {
-            $token = $this->client->verifyToken($user->id(), '12345678901');
+            $token = $mock_client->verifyToken($user->id(), '12345678901');
         } catch (AuthyFormatException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
             return;
@@ -121,15 +144,20 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testRequestSmsWithInvalidUser()
     {
-        $sms = $this->client->requestSms(0, array("force" => "true"));
+        $mock_client = $this->mockClient([[400, '{ "token": "is invalid" }']]);
+        $sms = $mock_client->requestSms(0, array("force" => "true"));
 
         $this->assertEquals(false, $sms->ok());
     }
 
     public function testRequestSmsWithValidUser()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $sms = $this->client->requestSms($user->id(), array("force" => "true"));
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [200, '{ "message": "SMS sent" }']
+        ]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $sms = $mock_client->requestSms($user->id(), array("force" => "true"));
 
         $this->assertEquals(true, $sms->ok());
         //$this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
@@ -137,7 +165,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testPhonceCallWithInvalidUser()
     {
-        $call = $this->client->phoneCall(0, array());
+        $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
+        $call = $mock_client->phoneCall(0, array());
 
         $this->assertEquals(false, $call->ok());
         $this->assertEquals("User not found.", $call->errors()->message);
@@ -145,8 +174,12 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testPhonceCallWithValidUser()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $call = $this->client->phoneCall($user->id(), array());
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [200, '{ "message": "Call started" }']
+        ]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $call = $mock_client->phoneCall($user->id(), array());
 
         $this->assertEquals(true, $call->ok());
         $this->assertRegExp('/Call started/i', $call->message());
@@ -154,7 +187,8 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteUserWithInvalidUser()
     {
-        $response = $this->client->deleteUser(0);
+        $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
+        $response = $mock_client->deleteUser(0);
 
         $this->assertEquals(false, $response->ok());
         $this->assertEquals("User not found.", $response->errors()->message);
@@ -162,15 +196,20 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testDeleteUserWithValidUser()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $response = $this->client->deleteUser($user->id());
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [200, '{ "message": "User deleted" }']
+        ]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $response = $mock_client->deleteUser($user->id());
 
         $this->assertEquals(true, $response->ok());
     }
 
     public function testUserStatusWithInvalidUser()
     {
-        $response = $this->client->userStatus(0);
+        $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
+        $response = $mock_client->userStatus(0);
 
         $this->assertEquals(false, $response->ok());
         $this->assertEquals("User not found.", $response->errors()->message);
@@ -178,15 +217,23 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testUserStatusWithValidUser()
     {
-        $user = $this->client->registerUser('user@example.com', '305-456-2345', 1);
-        $response = $this->client->userStatus($user->id());
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [200, '{ "message": "User status" }']
+        ]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $response = $mock_client->userStatus($user->id());
 
         $this->assertEquals(true, $response->ok());
     }
 
     public function testPhoneVerificationStartWithoutVia()
     {
-        $response = $this->client->PhoneVerificationStart('111-111-1111', '1');
+        $mock = new MockHandler([new Response(200, [], '{"message": "Text message sent"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        $response = $mock_client->PhoneVerificationStart('111-111-1111', '1');
 
         $this->assertEquals(true, $response->ok());
         $this->assertRegExp('/Text message sent/i', $response->message());
@@ -194,7 +241,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testPhoneVerificationStartWithVia()
     {
-        $response = $this->client->PhoneVerificationStart('111-111-1111', '1', 'call');
+        $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call');
 
         $this->assertEquals(true, $response->ok());
         $this->assertRegExp('/Call to .* initiated/i', $response->message());
@@ -202,7 +253,11 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testPhoneVerificationCheck()
     {
-        $response = $this->client->PhoneVerificationCheck('111-111-1111', '1', '0000');
+        $mock = new MockHandler([new Response(200, [], '{"message": "Verification code is correct"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        $response = $mock_client->PhoneVerificationCheck('111-111-1111', '1', '0000');
 
         $this->assertEquals(true, $response->ok());
         $this->assertRegExp('/Verification code is correct/i', $response->message());
@@ -210,9 +265,23 @@ class ApiTest extends \PHPUnit_Framework_TestCase
 
     public function testPhoneInfo()
     {
-        $response = $this->client->PhoneInfo('111-111-1111', '1');
+        $mock_client = $this->mockClient([[200, '{"message": "Phone number information"}']]);
+        $response = $mock_client->PhoneInfo('111-111-1111', '1');
 
         $this->assertEquals(true, $response->ok());
         $this->assertRegExp('/Phone number information/i', $response->message());
     }
+
+    private function mockClient($_resp)
+    {
+        $responses = [];
+        foreach($_resp as $r) {
+            array_push($responses, new Response($r[0], [], $r[1]));
+        }
+
+        $mock = new MockHandler($responses);
+        $handler = HandlerStack::create($mock);
+        return new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+    }
+
 }

@@ -37,13 +37,20 @@ class AuthyApi
      * @param string $api_key Api Key
      * @param string $api_url Optional api url
      */
-    public function __construct($api_key, $api_url = "https://api.authy.com")
+    public function __construct($api_key, $api_url = "https://api.authy.com", $http_handler = null)
     {
-        $this->rest = new \GuzzleHttp\Client(array(
+        $client_opts = array(
             'base_uri'      => "{$api_url}/protected/json/",
             'headers'       => array( 'User-Agent' => $this->__getUserAgent(), 'X-Authy-API-Key' => $api_key),
             'http_errors'   => false
-        ));
+        );
+
+        if($http_handler != null)
+        {
+            $client_opts['handler'] = $http_handler;
+        }
+
+        $this->rest = new \GuzzleHttp\Client($client_opts);
 
         $this->api_url = $api_url;
         $this->default_options = array('curl' => [CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4]);
