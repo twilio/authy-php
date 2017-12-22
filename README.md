@@ -1,10 +1,12 @@
 # PHP Client for Authy API
 
+[![Build Status](https://travis-ci.org/authy/authy-php.svg?branch=master)](https://travis-ci.org/authy/authy-php)
+
 A php library for using the Authy API.
 
 ## Installation
 
-This library requires PHP 5.3+
+This library requires PHP 5.6+
 
 ### Install via composer:
 
@@ -14,7 +16,7 @@ Include it in your `composer.json` as follows:
 
 	{
 	    "require": {
-	        "authy/php": "2.*"
+	        "authy/php": "2.5"
 	    }
 	}
 
