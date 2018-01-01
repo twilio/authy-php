@@ -16,7 +16,7 @@ Include it in your `composer.json` as follows:
 
 	{
 	    "require": {
-	        "authy/php": "2.5"
+	        "authy/php": "3.0'"
 	    }
 	}
 
