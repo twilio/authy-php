@@ -30,11 +30,6 @@ To use this client you just need to use Authy_Api and initialize it with your AP
 
 Now that you have an Authy API object you can start sending requests.
 
-NOTE: if you want to make requests to sandbox you have to pass the sandbox url as the second argument:
-
-	$authy_api = new Authy\AuthyApi('#your_api_key', 'http://sandbox-api.authy.com');
-
-
 ## Creating Users
 
 __NOTE: User is matched based on cellphone and country code not e-mail.
