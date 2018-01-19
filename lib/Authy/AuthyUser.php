@@ -23,7 +23,7 @@
  */
 namespace Authy;
 
-use Psr\Http\Message\responseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class AuthyUser extends AuthyResponse
 {
