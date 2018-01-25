@@ -150,16 +150,14 @@ class AuthyApi
     }
 
     /**
-     * @param string $authy_id User's id stored in your database
      * @param string $uuid     Unique identifier of approval request
      * @param array  $opts     Array of options
      *
      * @return AuthyResponse
      */
-    public function checkOneTouchApproval($authy_id, $uuid, $opts = [])
+    public function checkOneTouchApproval($uuid, $opts = [])
     {
-        $authy_id = urlencode($authy_id);
-        $resp = $this->rest->get("onetouch/json/users/{$authy_id}/approval_requests/{$uuid}", array_merge(
+        $resp = $this->rest->get("onetouch/json/approval_requests/{$uuid}", array_merge(
             $this->default_options,
             ['query' => $opts]
         ));
