@@ -26,7 +26,7 @@ namespace Authy;
 
 class AuthyApi
 {
-    const VERSION = '3.0.0';
+    const VERSION = '3.0.1';
 
     protected $rest;
     protected $api_url;
