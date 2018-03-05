@@ -26,7 +26,7 @@ namespace Authy;
 
 class AuthyApi
 {
-    const VERSION = '3.0.0';
+    const VERSION = '3.0.1';
 
     protected $rest;
     protected $api_url;
@@ -186,10 +186,12 @@ class AuthyApi
      * @param string $phone_number User's phone_number stored in your database
      * @param string $country_code User's phone country code stored in your database
      * @param string $via The method the token will be sent to user (sms or call)
+     * @param int $code_length The length of the verifcation code to be sent to the user
      *
      * @return AuthyResponse the server response
      */
-    public function phoneVerificationStart($phone_number, $country_code, $via='sms')
+    public function phoneVerificationStart($phone_number, $country_code,
+                                           $via='sms', $code_length=4)
     {
         $resp = $this->rest->post("phones/verification/start", array_merge(
             $this->default_options,
@@ -197,7 +199,8 @@ class AuthyApi
                 'query' => array(
                     "phone_number" => $phone_number,
                     "country_code" => $country_code,
-                    "via"          => $via
+                    "via"          => $via,
+                    "code_length"  => $code_length
                 )
             )
         ));
