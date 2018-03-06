@@ -11,15 +11,29 @@ use GuzzleHttp\Stream\Stream;
 
 class ApiTest extends \PHPUnit_Framework_TestCase
 {
+
+    /**
+    * @var string
+    */
     private $invalid_token;
+
+    /**
+    * @var string
+    */
     private $valid_token;
 
+    /**
+    *
+    */
     public function setUp()
     {
         $this->invalid_token = '1234567';
         $this->valid_token = '0000000';
     }
 
+    /**
+    *
+    */
     public function testCreateUserWithValidData()
     {
         $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
@@ -29,6 +43,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty((array) $user->errors());
     }
 
+    /**
+    *
+    */
     public function testCreateUserWithInvalidData()
     {
         $mock_client = $this->mockClient([[400, '{ "errors": { "message": "User was not valid", "email":"is invalid", "cellphone":"is invalid" } }']]);
@@ -45,6 +62,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("is invalid", $errors["cellphone"]);
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithValidUser()
     {
         $mock_client = $this->mockClient([
@@ -58,6 +78,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $token->ok());
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithInvalidUser()
     {
         $mock_client = $this->mockClient([[404, '{"errors": {"message": "User doesn\'t exist"}}']]);
@@ -68,6 +91,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User doesn't exist", $token->errors()->message);
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithInvalidToken()
     {
         $mock_client = $this->mockClient([
@@ -79,6 +105,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $token->ok());
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithValidToken()
     {
         $mock_client = $this->mockClient([
@@ -90,6 +119,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $token->ok());
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithNonNumericToken()
     {
         $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
@@ -103,6 +135,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithNonNumericAuthyId()
     {
         $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
@@ -116,6 +151,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithSmallerToken()
     {
         $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
@@ -129,6 +167,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');
     }
 
+    /**
+    *
+    */
     public function testVerifyTokenWithLongerToken()
     {
         $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
@@ -142,6 +183,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->fail('AuthyFormatException has not been raised.');
     }
 
+    /**
+    *
+    */
     public function testRequestSmsWithInvalidUser()
     {
         $mock_client = $this->mockClient([[400, '{ "token": "is invalid" }']]);
@@ -150,6 +194,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $sms->ok());
     }
 
+    /**
+    *
+    */
     public function testRequestSmsWithValidUser()
     {
         $mock_client = $this->mockClient([
@@ -163,6 +210,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         //$this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
     }
 
+    /**
+    *
+    */
     public function testPhonceCallWithInvalidUser()
     {
         $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
@@ -172,6 +222,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User not found.", $call->errors()->message);
     }
 
+    /**
+    *
+    */
     public function testPhonceCallWithValidUser()
     {
         $mock_client = $this->mockClient([
@@ -185,6 +238,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Call started/i', $call->message());
     }
 
+    /**
+    *
+    */
     public function testDeleteUserWithInvalidUser()
     {
         $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
@@ -194,6 +250,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User not found.", $response->errors()->message);
     }
 
+    /**
+    *
+    */
     public function testDeleteUserWithValidUser()
     {
         $mock_client = $this->mockClient([
@@ -206,6 +265,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $response->ok());
     }
 
+    /**
+    *
+    */
     public function testUserStatusWithInvalidUser()
     {
         $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
@@ -215,6 +277,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("User not found.", $response->errors()->message);
     }
 
+    /**
+    *
+    */
     public function testUserStatusWithValidUser()
     {
         $mock_client = $this->mockClient([
@@ -227,6 +292,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $response->ok());
     }
 
+    /**
+    *
+    */
     public function testPhoneVerificationStartWithoutVia()
     {
         $mock = new MockHandler([new Response(200, [], '{"message": "Text message sent"}')]);
@@ -239,6 +307,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Text message sent/i', $response->message());
     }
 
+    /**
+    *
+    */
     public function testPhoneVerificationStartWithVia()
     {
         $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
@@ -251,6 +322,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Call to .* initiated/i', $response->message());
     }
 
+    /**
+    *
+    */
     public function testPhoneVerificationStartWithCodeLength()
     {
         $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
@@ -263,6 +337,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Call to .* initiated/i', $response->message());
     }
 
+    /**
+    *
+    */
     public function testPhoneVerificationCheck()
     {
         $mock = new MockHandler([new Response(200, [], '{"message": "Verification code is correct"}')]);
@@ -275,6 +352,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Verification code is correct/i', $response->message());
     }
 
+    /**
+    *
+    */
     public function testPhoneInfo()
     {
         $mock_client = $this->mockClient([[200, '{"message": "Phone number information"}']]);
@@ -284,6 +364,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Phone number information/i', $response->message());
     }
 
+    /**
+    *
+    */
     private function mockClient($_resp)
     {
         $responses = [];

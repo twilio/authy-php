@@ -256,6 +256,47 @@ class AuthyApi
         return new AuthyResponse($resp);
     }
 
+    /**
+    * Create a new approval request for a user
+    *
+    * @param string $authy_id User's id stored in your database
+    * @param array  $opts     Array of options
+    *
+    * @return AuthyResponse
+    *
+    * @see http://docs.authy.com/onetouch.html#create-approvalrequest
+    */
+    public function createApprovalRequest($authy_id, $opts = [])
+    {
+        $authy_id = urlencode($authy_id);
+        $resp = $this->rest->post("onetouch/json/users/{$authy_id}/approval_requests", array_merge(
+            $this->default_options,
+            ['query' => $opts]
+        ));
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
+    * Check the status of an approval request
+    *
+    * @param string $request_uuid The UUID of the approval request you want to check
+    *
+    * @return AuthyResponse
+    *
+    * @see http://docs.authy.com/onetouch.html#check-approvalrequest-status
+    */
+    public function getApprovalRequest($request_uuid)
+    {
+        $request_uuid = urlencode($request_uuid);
+        $resp = $this->rest->get("/onetouch/json/approval_requests/{$request_uuid}");
+
+        return new AuthyResponse($resp);
+    }
+
+    /**
+     * @return mixed
+     */
     private function __getUserAgent()
     {
         return sprintf(
@@ -268,6 +309,13 @@ class AuthyApi
         );
     }
 
+
+    /**
+     * @param $token
+     * @param $authy_id
+     *
+     * @throws AuthyFormatException
+     */
     private function __validateVerify($token, $authy_id)
     {
         $this->__validate_digit($token, "Invalid Token. Only digits accepted.");
@@ -278,6 +326,12 @@ class AuthyApi
         }
     }
 
+    /**
+     * @param $var
+     * @param $message
+     *
+     * @throws AuthyFormatException
+     */
     private function __validate_digit($var, $message)
     {
         if( !is_int($var) && !is_numeric($var) ) {
