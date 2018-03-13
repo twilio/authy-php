@@ -93,10 +93,10 @@ class AuthyApi
      */
     public function verifyToken($authy_id, $token, $opts = array())
     {
-        $params = [];
-
         if (! array_key_exists("force", $opts)) {
-            $params["force"] = "true";
+            $opts["force"] = "true";
+        } else {
+            unset($opts["force"]);
         }
 
         $token = urlencode($token);
@@ -105,9 +105,7 @@ class AuthyApi
 
         $resp = $this->rest->get("verify/{$token}/{$authy_id}", array_merge(
             $this->default_options,
-            array(
-                'query' => $params
-            )
+            array('query' => $opts)
         ));
 
         return new AuthyToken($resp);
