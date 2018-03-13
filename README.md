@@ -93,6 +93,10 @@ This call will be ignored if the user is using the Authy Mobile App. If you stil
 the SMS pass `force=>true` as an option
 
     $sms = $authy_api->requestSms('authy-id', array("force" => "true"));
+    
+Additional options can be passed into the array, such as [custom actions](https://www.twilio.com/docs/api/authy/rest/one-time-passwords#custom-actions-optional):
+
+    $sms = $authy_api->requestSms('authy-id', array("action" => "login", "action_message" => "Login code"));
 
 ## Checking User Status
 
