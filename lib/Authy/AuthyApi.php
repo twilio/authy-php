@@ -64,16 +64,17 @@ class AuthyApi
      * @param  int       $country_code New user's country code. defaults to USA(1)
      * @return AuthyUser the new registered user
      */
-    public function registerUser($email, $cellphone, $country_code = 1)
+    public function registerUser($email, $cellphone, $country_code = 1, $send_install_link = True)
     {
         $resp = $this->rest->post('users/new', array_merge(
             $this->default_options,
             array(
                 'query' => array(
                     'user' => array(
-                        "email"        => $email,
-                        "cellphone"    => $cellphone,
-                        "country_code" => $country_code
+                        "email"                     => $email,
+                        "cellphone"                 => $cellphone,
+                        "country_code"              => $country_code,
+                        "send_install_link_via_sms" => $send_install_link,
                     )
                 )
             )
@@ -122,6 +123,7 @@ class AuthyApi
     public function requestSms($authy_id, $opts = array())
     {
         $authy_id = urlencode($authy_id);
+
         $resp = $this->rest->get("sms/{$authy_id}", array_merge(
             $this->default_options,
             array('query' => $opts)
@@ -160,7 +162,7 @@ class AuthyApi
     public function deleteUser($authy_id)
     {
         $authy_id = urlencode($authy_id);
-        $resp = $this->rest->post("users/delete/{$authy_id}", $this->default_options);
+        $resp = $this->rest->post("users/{$authy_id}/remove", $this->default_options);
         return new AuthyResponse($resp);
     }
 
