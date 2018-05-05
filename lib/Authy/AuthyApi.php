@@ -26,7 +26,7 @@ namespace Authy;
 
 class AuthyApi
 {
-    const VERSION = '3.0.2';
+    const VERSION = '3.0.3';
 
     protected $rest;
     protected $api_url;
@@ -202,8 +202,9 @@ class AuthyApi
             "code_length"  => $code_length
         );
 
-        if ($locale != null)
-          $query["locale"] = $locale;
+        if ($locale != null) {
+            $query["locale"] = $locale;
+        }
 
         $resp = $this->rest->post("phones/verification/start", array_merge(
             $this->default_options,
