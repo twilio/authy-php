@@ -169,7 +169,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testRequestOneTouchApprovalWithInvalidUser()
     {
         $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
-        $oneTouchApproval = $mock_client->createApprovalRequest(0);
+        $oneTouchApproval = $mock_client->createApprovalRequest(0, 'Request OneTouch Approval With Invalid User');
 
         $this->assertEquals(false, $oneTouchApproval->ok());
     }
@@ -185,7 +185,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
-        $oneTouchApproval = $mock_client->createApprovalRequest($user->id());
+        $oneTouchApproval = $mock_client->createApprovalRequest($user->id(), 'Request OneTouch Approval With Valid User');
 
         $this->assertEquals(true, $oneTouchApproval->ok());
     }
@@ -196,12 +196,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testCheckOneTouchApprovalWithInvalidUuid()
     {
         $mock_client = $this->mockClient([
-            [200, '{ "user": { "id": 2 } }'],
             [404, '{ "message": "Approval request not found: 1231", "success": false, }'],
         ]);
 
-        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
-        $oneTouchApproval = $mock_client->createApprovalRequest($user->id(), '1231');
+        $oneTouchApproval = $mock_client->getApprovalRequest('1231');
 
         $this->assertEquals(false, $oneTouchApproval->ok());
     }
@@ -212,12 +210,10 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testCheckOneTouchApprovalWithValidUuid()
     {
         $mock_client = $this->mockClient([
-            [200, '{ "user": { "id": 2 } }'],
             [200, '{ "approval_request": { "uuid":"fd285c30-97f8-0135-cfa7-1241e5695bb0" }, "success": true }'],
         ]);
 
-        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
-        $oneTouchApproval = $mock_client->createApprovalRequest($user->id(), 'fd285c30-97f8-0135-cfa7-1241e5695bb0');
+        $oneTouchApproval = $mock_client->getApprovalRequest('fd285c30-97f8-0135-cfa7-1241e5695bb0');
 
         $this->assertEquals(true, $oneTouchApproval->ok());
     }

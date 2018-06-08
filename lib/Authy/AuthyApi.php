@@ -272,8 +272,10 @@ class AuthyApi
      *
      * @see http://docs.authy.com/onetouch.html#create-approvalrequest
      */
-    public function createApprovalRequest($authy_id, $opts = [])
+    public function createApprovalRequest($authy_id, $message, $opts = [])
     {
+        $opts['message'] = $message;
+        
         $authy_id = urlencode($authy_id);
         $resp = $this->rest->post("onetouch/json/users/{$authy_id}/approval_requests", array_merge(
             $this->default_options,
