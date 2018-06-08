@@ -49,7 +49,7 @@ class AuthyResponse
             $this->body = new \stdClass();
         } elseif (!$this->ok() && gettype($this->body) == 'string') {
             // the response was an error so put the body as an error
-            $this->errors = (object) array("error" => $this->body);
+            $this->errors = (object) ["error" => $this->body];
             $this->body = new \stdClass();
         }
     }
