@@ -145,7 +145,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testRequestSmsWithInvalidUser()
     {
         $mock_client = $this->mockClient([[400, '{ "token": "is invalid" }']]);
-        $sms = $mock_client->requestSms(0, array("force" => "true"));
+        $sms = $mock_client->requestSms(0, ["force" => "true"]);
 
         $this->assertEquals(false, $sms->ok());
     }
@@ -157,16 +157,71 @@ class ApiTest extends \PHPUnit_Framework_TestCase
             [200, '{ "message": "SMS sent" }']
         ]);
         $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
-        $sms = $mock_client->requestSms($user->id(), array("force" => "true"));
+        $sms = $mock_client->requestSms($user->id(), ["force" => "true"]);
 
         $this->assertEquals(true, $sms->ok());
         //$this->assertEquals("is not activated for this account", $sms->errors()->enable_sms);
     }
 
+    /**
+     *
+     */
+    public function testRequestOneTouchApprovalWithInvalidUser()
+    {
+        $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
+        $oneTouchApproval = $mock_client->createApprovalRequest(0, 'Request OneTouch Approval With Invalid User');
+
+        $this->assertEquals(false, $oneTouchApproval->ok());
+    }
+
+    /**
+     *
+     */
+    public function testRequestOneTouchApprovalWithValidUser()
+    {
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [200, '{ "approval_request": { "uuid":"fd285c30-97f8-0135-cfa7-1241e5695bb0" }, "success": true }'],
+        ]);
+
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $oneTouchApproval = $mock_client->createApprovalRequest($user->id(), 'Request OneTouch Approval With Valid User');
+
+        $this->assertEquals(true, $oneTouchApproval->ok());
+    }
+
+    /**
+     *
+     */
+    public function testCheckOneTouchApprovalWithInvalidUuid()
+    {
+        $mock_client = $this->mockClient([
+            [404, '{ "message": "Approval request not found: 1231", "success": false, }'],
+        ]);
+
+        $oneTouchApproval = $mock_client->getApprovalRequest('1231');
+
+        $this->assertEquals(false, $oneTouchApproval->ok());
+    }
+
+    /**
+     *
+     */
+    public function testCheckOneTouchApprovalWithValidUuid()
+    {
+        $mock_client = $this->mockClient([
+            [200, '{ "approval_request": { "uuid":"fd285c30-97f8-0135-cfa7-1241e5695bb0" }, "success": true }'],
+        ]);
+
+        $oneTouchApproval = $mock_client->getApprovalRequest('fd285c30-97f8-0135-cfa7-1241e5695bb0');
+
+        $this->assertEquals(true, $oneTouchApproval->ok());
+    }
+
     public function testPhonceCallWithInvalidUser()
     {
         $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
-        $call = $mock_client->phoneCall(0, array());
+        $call = $mock_client->phoneCall(0, []);
 
         $this->assertEquals(false, $call->ok());
         $this->assertEquals("User not found.", $call->errors()->message);
@@ -179,7 +234,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
             [200, '{ "message": "Call started" }']
         ]);
         $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
-        $call = $mock_client->phoneCall($user->id(), array());
+        $call = $mock_client->phoneCall($user->id(), []);
 
         $this->assertEquals(true, $call->ok());
         $this->assertRegExp('/Call started/i', $call->message());
