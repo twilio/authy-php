@@ -102,7 +102,11 @@ class AuthyApi
 
         $token = urlencode($token);
         $authy_id = urlencode($authy_id);
-        $this->__validateVerify($token, $authy_id);
+        try {
+            $this->__validateVerify($token, $authy_id);
+        } catch (AuthyFormatException $e) {
+            throw new AuthyFormatException($e->getMessage());
+        }
 
         $resp = $this->rest->get("protected/json/verify/{$token}/{$authy_id}", array_merge(
             $this->default_options,
