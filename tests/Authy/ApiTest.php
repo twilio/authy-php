@@ -240,6 +240,28 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Call started/i', $call->message());
     }
 
+    public function testQrCodeWithInvalidUser()
+    {
+        $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
+        $call = $mock_client->qrCode(0, []);
+
+        $this->assertEquals(false, $call->ok());
+        $this->assertEquals("User not found.", $call->errors()->message);
+    }
+
+    public function testQrCodeWithValidUser()
+    {
+        $mock_client = $this->mockClient([
+            [200, '{ "user": { "id": 2 } }'],
+            [200, '{ "qr_code": "https://example.com/qr.png" }']
+        ]);
+        $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
+        $call = $mock_client->qrCode($user->id(), []);
+
+        $this->assertEquals(true, $call->ok());
+        $this->assertNotNull($call->bodyvar('qr_code'));
+    }
+
     public function testDeleteUserWithInvalidUser()
     {
         $mock_client = $this->mockClient([[404, '{"errors": {"message": "User not found."}}']]);
