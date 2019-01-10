@@ -96,8 +96,6 @@ class AuthyApi
     {
         if (! array_key_exists("force", $opts)) {
             $opts["force"] = "true";
-        } else {
-            unset($opts["force"]);
         }
 
         $token = urlencode($token);
