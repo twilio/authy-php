@@ -1,0 +1,131 @@
+Skip to content
+We are having a problem billing the Maxprofsmax organization. Please update your payment method or call your payment provider for details on why the transaction failed. If you don’t need access to your private repositories, you can downgrade to the Free plan.
+You can always contact support with any questions.
+aluminum dotnet
+Repositories0
+Code756
+Commits0
+Issues1
+Marketplace0
+Topics0
+Wikis0
+Users0
+Language
+
+Sort
+
+756 code results
+@mike-ward
+mike-ward/mike-ward.github.io – 2011-12-17-friday-links-181.md
+Showing the top two matches
+Last indexed on Jun 28, 2018
+Markdown
+[JetBrains .NET Tools Blog » Blog Archive » ReSharper 6.1: The Finish Line](http://blogs.jetbrains.com/dotnet/2011/12/resharper-61-the-finish-line/)   
+[JetBrains .NET Tools Blog » Blog Archive » dotPeek is Back with New Early Build](http://blogs.jetbrains.com/dotnet/2011/12/dotpeek-is-back-with-new-early-build/)   
+@mike-ward
+mike-ward/mike-ward.net – 2011-12-17-friday-links-181.md
+Showing the top two matches
+Last indexed on Jun 28, 2018
+Markdown
+[JetBrains .NET Tools Blog » Blog Archive » ReSharper 6.1: The Finish Line](http://blogs.jetbrains.com/dotnet/2011/12/resharper-61-the-finish-line/)   
+[JetBrains .NET Tools Blog » Blog Archive » dotPeek is Back with New Early Build](http://blogs.jetbrains.com/dotnet/2011/12/dotpeek-is-back-with-new-early-build/)   
+[Remains of the Day: HP Gives WebOS to the Open Source Community [For What It's Worth]](http://feeds.gawker.com/~r/lifehacker/full/~3/EqkwaAdOeF0/remains-of-the-day-hp-gives-webos-to-the-open-source-community)
+@gadgetory
+gadgetory/gadgetory.github.io – Aluminum-vs-Copper-Coldplates-for-CPU-Coolers-XS8oDN7KFEI.html
+Showing the top match
+Last indexed on Jul 13, 2018
+HTML
+</script><script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5a9622b05d0b9500130f3375&amp;product=sticky-share-buttons" async="async"></script><title>Aluminum vs. Copper Coldplates for CPU Coolers | Gadgetory - Your Gadget Factory</title><meta content="Aluminum vs. Copper Coldplates for CPU Coolers - All Cool Mind-blowing Gadgets You Love in One Place" name="description"><meta name="keywords" content="unboxing, tech, technology, gadgets, gaming, games, unbox, computers, apple, mac, reviews, iphone, samsung, galaxy, android, review"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/bootstrap.css"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/gadgetory.css"><meta name="google-site-verification" content="75SjvABF8w90SHnCruD-8v2BLGIyqyMoKbjrSrBWO28"></head><body><div class="container-fluid"><h1><a href="/">Gadgetory</a></h1><hr><h4 class="text-right">All Cool Mind-blowing Gadgets You Love in One Place</h4></div><div id="amzn-assoc-ad-63fa8890-d7fc-46d2-8bed-ba8231849124"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&amp;adInstanceId=63fa8890-d7fc-46d2-8bed-ba8231849124"></script><div class="container"><ol class="breadcrumb"><li><a href="/">Gadgetory</a></li><li><a href="/Gamers-Nexus/">Gamers Nexus</a></li><li class="active">Aluminum vs. Copper Coldplates for CPU Coolers</li></ol></div><h2 class="post__title"><b>Aluminum vs. Copper Coldplates for CPU Coolers</b></h2><h5 class="post__date">2015-06-11</h5><div class="container"><div class="video-responsive"><iframe width="560" height="315" src="https://www.youtube.com/embed/XS8oDN7KFEI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div><div class="post__text">anyone I am Steve from gamers Nexus
+@linno60
+linno60/dotnet-all-pr – where-clause.raw.page.json
+Showing the top match
+Last indexed on Jul 7, 2018
+JSON
+{"content":"<div><div class=\"content\">\n<p>Specifies the filtering condition for a query.  </p>\n<h2 id=\"syntax\">Syntax</h2>\n<pre class=\"loading\"><code>Where condition  \n</code></pre><h2 id=\"parts\">Parts</h2>\n<p> <code>condition</code><br> Required. An expression that determines whether the values for the current item in the collection are included in the output collection. The expression must evaluate to a <code>Boolean</code> value or the equivalent of a <code>Boolean</code> value. If the condition evaluates to <code>True</code>, the element is included in the query result; otherwise, the element is excluded from the query result.  </p>\n<h2 id=\"remarks\">Remarks</h2>\n<p> The <code>Where</code> clause enables you to filter query data by selecting only elements that meet certain criteria. Elements whose values cause the <code>Where</code> clause to evaluate to <code>True</code> are included in the query result; other elements are excluded. The expression that is used in a <code>Where</code> clause must evaluate to a <code>Boolean</code> or the equivalent of a <code>Boolean</code>, such as an Integer that evaluates to <code>False</code> when its value is zero. You can combine multiple expressions in a <code>Where</code> clause by using logical operators such as <code>And</code>, <code>Or</code>, <code>AndAlso</code>, <code>OrElse</code>, <code>Is</code>, and <code>IsNot</code>.  </p>\n<p> By default, query expressions are not evaluated until they are accessed—for example, when they are data-bound or iterated through in a <code>For</code> loop. As a result, the <code>Where</code> clause is not evaluated until the query is accessed. If you have values external to the query that are used in the <code>Where</code> clause, ensure that the appropriate value is used in the <code>Where</code> clause at the time the query is executed. For more information about query execution, see <a href=\"../../programming-guide/concepts/linq/writing-your-first-linq-query\" data-linktype=\"relative-path\">Writing Your First LINQ Query</a>.  </p>\n<p> You can call functions within a <code>Where</code> clause to perform a calculation or operation on a value from the current element in the collection. Calling a function in a <code>Where</code> clause can cause the query to be executed immediately when it is defined instead of when it is accessed. For more information about query execution, see <a href=\"../../programming-guide/concepts/linq/writing-your-first-linq-query\" data-linktype=\"relative-path\">Writing Your First LINQ Query</a>.  </p>\n<h2 id=\"example\">Example</h2>\n<p> The following query expression uses a <code>From</code> clause to declare a range variable <code>cust</code> for each <code>Customer</code> object in the <code>customers</code> collection. The <code>Where</code> clause uses the range variable to restrict the output to customers from the specified region. The <code>For Each</code> loop displays the company name for each customer in the query result.  </p>\n<pre><code class=\"lang-vb\" name=\"VbSimpleQuerySamples#23\">Sub DisplayCustomersForRegion(ByVal customers As List(Of Customer),\n                              ByVal region As String)\n\n  Dim customersForRegion = From cust In customers\n                           Where cust.Region = region\n\n  For Each cust In customersForRegion\n    Console.WriteLine(cust.CompanyName)\n  Next\nEnd Sub\n</code></pre><h2 id=\"example-1\">Example</h2>\n<p> The following example uses <code>And</code> and <code>Or</code> logical operators in the <code>Where</code> clause.  </p>\n<pre><code class=\"lang-vb\" name=\"VbSimpleQuerySamples#31\">Private Sub DisplayElements()\n    Dim elements As List(Of Element) = BuildList()\n\n    &#39; Get a list of elements that have an atomic number from 12 to 14,\n    &#39; or that have a name that ends in &quot;r&quot;.\n    Dim subset = From theElement In elements\n        Where (theElement.AtomicNumber &gt;= 12 And theElement.AtomicNumber &lt; 15) _\n        Or theElement.Name.EndsWith(&quot;r&quot;)\n        Order By theElement.Name\n\n    For Each theElement In subset\n        Console.WriteLine(theElement.Name &amp; &quot; &quot; &amp; theElement.AtomicNumber)\n    Next\n\n    &#39; Output:\n    &#39;  Aluminum 13\n    &#39;  Magnesium 12\n    &#39;  Silicon 14\n    &#39;  Sulfur 16\nEnd Sub\n\nPrivate Function BuildList() As List(Of Element)\n    Return New List(Of Element) From\n        {\n            {New Element With {.Name = &quot;Sodium&quot;, .AtomicNumber = 11}},\n            {New Element With {.Name = &quot;Magnesium&quot;, .AtomicNumber = 12}},\n            {New Element With {.Name = &quot;Aluminum&quot;, .AtomicNumber = 13}},\n            {New Element With {.Name = &quot;Silicon&quot;, .AtomicNumber = 14}},\n            {New Element With {.Name = &quot;Phosphorous&quot;, .AtomicNumber = 15}},\n            {New Element With {.Name = &quot;Sulfur&quot;, .AtomicNumber = 16}}\n        }\nEnd Function\n\nPublic Class Element\n    Public Property Name As String\n    Public Property AtomicNumber As Integer\nEnd Class\n</code></pre><h2 id=\"see-also\">See Also</h2>\n<p> <a href=\"../../programming-guide/language-features/linq/introduction-to-linq\" data-linktype=\"relative-path\">Introduction to LINQ in Visual Basic</a><br> <a href=\"queries\" data-linktype=\"relative-path\">Queries</a><br> <a href=\"from-clause\" data-linktype=\"relative-path\">From Clause</a><br> <a href=\"select-clause\" data-linktype=\"relative-path\">Select Clause</a><br> <a href=\"../statements/for-each-next-statement\" data-linktype=\"relative-path\">For Each...Next Statement</a></p>\n</div></div>","outputRootRelativePath":"../../../../","pageMetadata":"<meta name=\"author\" content=\"stevehoag\">\r\n<meta name=\"ms.author\" content=\"shoag\">\r\n<meta name=\"manager\" content=\"wpickett\">\r\n<meta name=\"breadcrumb_path\" content=\"../toc2.json\">\r\n<meta name=\"apiPlatform\" content=\"dotnet\">\r\n<meta name=\"uhfHeaderId\" content=\"MSDocsHeader-DotNet\">\r\n<meta name=\"ms.suite\" content=\"\">\r\n<meta name=\"ms.assetid\" content=\"48b5c2c5-3181-429c-8545-894296798c89\">\r\n<meta name=\"translation.priority.ht\" content=\"cs-cz\">\r\n<meta name=\"translation.priority.ht\" content=\"de-de\">\r\n<meta name=\"translation.priority.ht\" content=\"es-es\">\r\n<meta name=\"translation.priority.ht\" content=\"fr-fr\">\r\n<meta name=\"translation.priority.ht\" content=\"it-it\">\r\n<meta name=\"translation.priority.ht\" content=\"ja-jp\">\r\n<meta name=\"translation.priority.ht\" content=\"ko-kr\">\r\n<meta name=\"translation.priority.ht\" content=\"pl-pl\">\r\n<meta name=\"translation.priority.ht\" content=\"pt-br\">\r\n<meta name=\"translation.priority.ht\" content=\"ru-ru\">\r\n<meta name=\"translation.priority.ht\" content=\"tr-tr\">\r\n<meta name=\"translation.priority.ht\" content=\"zh-cn\">\r\n<meta name=\"translation.priority.ht\" content=\"zh-tw\">\r\n<meta name=\"caps.latest.revision\" content=\"18\">\r\n<meta name=\"ms.topic\" content=\"article\">\r\n<meta name=\"ms.date\" content=\"2015-07-20\">\r\n<meta name=\"ms.technology\" content=\"devlang-visual-basic\">\r\n<meta name=\"ms.prod\" content=\".net\">\r\n<meta name=\"ms.reviewer\" content=\"\">\r\n<meta name=\"search.ms_sitename\" content=\"Docs\">\r\n<meta name=\"search.ms_docsetname\" content=\"docs-internal\">\r\n<meta name=\"version\" content=\"0\">\r\n<meta name=\"locale\" content=\"en-us\">\r\n<meta name=\"site_name\" content=\"Docs\">\r\n<meta name=\"search.ms_product\" content=\"MSDN\">\r\n<meta name=\"depot_name\" content=\"MSDN.docs-internal\">\r\n<meta name=\"updated_at\" content=\"2016-12-15 06:00 PM\">\r\n<meta name=\"gitcommit\" content=\"https://github.com/dotnet/docs-internal/blob/90fe68f7f3c4b46502b5d3770b1a2d57c6af748a/docs/visual-basic/language-reference/queries/where-clause.md\">\r\n<meta name=\"original_content_git_url\" content=\"https://github.com/dotnet/docs-internal/blob/master/docs/visual-basic/language-reference/queries/where-clause.md\">\r\n<meta name=\"document_id\" content=\"c61af186-7cca-271e-d0e3-ebb0c98d39b9\">\r\n<meta name=\"pagetype\" content=\"Conceptual\">\r\n<meta name=\"toc_rel\" content=\"../../../toc2.json\">\r\n","rawMetadata":{"author":"stevehoag","ms.author":"shoag","manager":"wpickett","breadcrumb_path":"/dotnet/toc.json","apiPlatform":"dotnet","uhfHeaderId":"MSDocsHeader-DotNet","title":"Where Clause (Visual Basic) | Microsoft Docs","ms.suite":"","ms.assetid":"48b5c2c5-3181-429c-8545-894296798c89","f1_keywords":["vb.QueryWhere"],"translation.priority.ht":["cs-cz","de-de","es-es","fr-fr","it-it","ja-jp","ko-kr","pl-pl","pt-br","ru-ru","tr-tr","zh-cn","zh-tw"],"caps.latest.revision":18,"ms.topic":"article","dev_langs":["vb"],"helpviewer_keywords":["Where statement","queries [Visual Basic], Where","Where clause"],"ms.date":"2015-07-20","ms.technology":["devlang-visual-basic"],"ms.prod":".net","ms.reviewer":"","search.ms_sitename":"Docs","search.ms_docsetname":"docs-internal","version":0,"_op_canonicalUrlPrefix":"https://docs.microsoft.com/en-us/dotnet-internal/","locale":"en-us","site_name":"Docs","search.ms_product":"MSDN","_op_openToPublicContributors":false,"depot_name":"MSDN.docs-internal","_op_gitCommitHistory":[{"author_name":"Maira Wenzel","author_email":"mairaw@microsoft.com","committer_name":"GitHub","comitter_email":"noreply@github.com","message":"Metadata updates (#1313)","commit_sha":"90fe68f7f3c4b46502b5d3770b1a2d57c6af748a","commit_date":"2016-12-09 12:40:41 -0800"},{"author_name":"Maira Wenzel","author_email":"mairaw@microsoft.com","committer_name":"Bill Wagner","comitter_email":"wiwagn@microsoft.com","message":":books: migration changes (#1235)","commit_sha":"b828bb1d6c8fb750ad9ef34f8a7a1b7d2574f4c6","commit_date":"2016-11-15 15:08:11 -0500"}],"updated_at":"2016-12-15 06:00 PM","_op_gitContributorInformation":{"author":{"profile_url":"https://github.com/stevehoag","display_name":"Steve Hoag","id":"13489215"},"contributors":[{"profile_url":"https://github.com/stevehoag","display_name":"Steve Hoag"},{"profile_url":"https://github.com/mairaw","display_name":"Maira Wenzel","id":"12971179"}],"update_at":"12/15/2016"},"gitcommit":"https://github.com/dotnet/docs-internal/blob/90fe68f7f3c4b46502b5d3770b1a2d57c6af748a/docs/visual-basic/language-reference/queries/where-clause.md","original_content_git_url":"https://github.com/dotnet/docs-internal/blob/master/docs/visual-basic/language-reference/queries/where-clause.md","open_to_public_contributors":false,"content_git_url":"https://github.com/dotnet/docs/blob/master/docs/visual-basic/language-reference/queries/where-clause.md","document_id":"c61af186-7cca-271e-d0e3-ebb0c98d39b9","layout":"Conceptual","pagetype":"Conceptual","canonical_url":"https://docs.microsoft.com/en-us/dotnet/articles/visual-basic/language-reference/queries/where-clause","toc_asset_id":"articles/toc.json","toc_rel":"../../../toc.json","_op_ogTitle":"Where Clause (Visual Basic)","_op_displayDate":null,"_op_displayDate_source":null,"_op_wordCount":591,"_op_rawTitle":"<h1 id=\"where-clause-visual-basic\" sourcefile=\"docs/visual-basic/language-reference/queries/where-clause.md\" sourcestartlinenumber=\"40\" sourceendlinenumber=\"40\">Where Clause (Visual Basic)</h1>","_op_searchScope":[".NET"],"_op_canonicalUrl":"https://docs.microsoft.com/en-us/dotnet/articles/visual-basic/language-reference/queries/where-clause","fileRelativePath":"articles/visual-basic/language-reference/queries/where-clause.html"},"themesRelativePathToOutputRoot":"_themes/"}
+@gadgetory
+gadgetory/gadgetory.github.io – Mionix-Sargas-320-Cloth-Mouse-Pad-Unboxing-First-Look-Linus-Tech-Tips-OrBp-AHUTgA.html
+Showing the top two matches
+Last indexed on Jul 13, 2018
+HTML
+</script><script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5a9622b05d0b9500130f3375&amp;product=sticky-share-buttons" async="async"></script><title>Mionix Sargas 320 Cloth Mouse Pad Unboxing &amp; First Look Linus Tech Tips | Gadgetory - Your Gadget Factory</title><meta content="Mionix Sargas 320 Cloth Mouse Pad Unboxing &amp; First Look Linus Tech Tips - All Cool Mind-blowing Gadgets You Love in One Place" name="description"><meta name="keywords" content="unboxing, tech, technology, gadgets, gaming, games, unbox, computers, apple, mac, reviews, iphone, samsung, galaxy, android, review"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/bootstrap.css"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/gadgetory.css"><meta name="google-site-verification" content="75SjvABF8w90SHnCruD-8v2BLGIyqyMoKbjrSrBWO28"></head><body><div class="container-fluid"><h1><a href="/">Gadgetory</a></h1><hr><h4 class="text-right">All Cool Mind-blowing Gadgets You Love in One Place</h4></div><div id="amzn-assoc-ad-63fa8890-d7fc-46d2-8bed-ba8231849124"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&amp;adInstanceId=63fa8890-d7fc-46d2-8bed-ba8231849124"></script><div class="container"><ol class="breadcrumb"><li><a href="/">Gadgetory</a></li><li><a href="/Linus-Tech-Tips/">Linus Tech Tips</a></li><li class="active">Mionix Sargas 320 Cloth Mouse Pad Unboxing &amp; First Look Linus Tech Tips</li></ol></div><h2 class="post__title"><b>Mionix Sargas 320 Cloth Mouse Pad Unboxing &amp; First Look Linus Tech Tips</b></h2><h5 class="post__date">2012-11-03</h5><div class="container"><div class="video-responsive"><iframe width="560" height="315" src="https://www.youtube.com/embed/OrBp-AHUTgA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div><div class="post__text">welcome to my unboxing and first look at
+the me onyx sarkis 320 light you're the
+head of the game me onyx dotnet
+high-performance microfiber mousepad
+this is similar to their aluminum one in
+form factor but it is made of cloth hey
+@0xFireball
+0xFireball/NetBitz3 – Program.cs
+Showing the top two matches
+Last indexed on Jul 3, 2018
+C#
+/*
+ */
+
+using System;
+using System.IO;
+using System.Linq;
+using dnlib.DotNet;
+using NBytzHyperKube;
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("NetBitz3 - Nickel Hydrogen Aluminum Research < />");
+@gadgetory
+gadgetory/gadgetory.github.io – EK-Wooden-Water-Blocks-New-AIOs-and-Vardar-Extreme-s2BiNrckSdE.html
+Showing the top three matches
+Last indexed on Jul 13, 2018
+HTML
+so there's an aluminum they're both
+they're both aluminum options but one is
+UV printed and the other one is just an
+aluminum plate so this is where the
+viewer engagement comes in if you're
+interested in either of these let them
+@gadgetory
+gadgetory/gadgetory.github.io – Craziest-Case-at-CES-Transforming-HTower-nBS84rcFPOo.html
+Showing the top three matches
+Last indexed on Jul 13, 2018
+HTML
+</script><script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=5a9622b05d0b9500130f3375&amp;product=sticky-share-buttons" async="async"></script><title>Craziest Case at CES - Transforming H-Tower | Gadgetory - Your Gadget Factory</title><meta content="Craziest Case at CES - Transforming H-Tower - All Cool Mind-blowing Gadgets You Love in One Place" name="description"><meta name="keywords" content="unboxing, tech, technology, gadgets, gaming, games, unbox, computers, apple, mac, reviews, iphone, samsung, galaxy, android, review"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/bootstrap.css"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/gadgetory.css"><meta name="google-site-verification" content="75SjvABF8w90SHnCruD-8v2BLGIyqyMoKbjrSrBWO28"></head><body><div class="container-fluid"><h1><a href="/">Gadgetory</a></h1><hr><h4 class="text-right">All Cool Mind-blowing Gadgets You Love in One Place</h4></div><div id="amzn-assoc-ad-63fa8890-d7fc-46d2-8bed-ba8231849124"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&amp;adInstanceId=63fa8890-d7fc-46d2-8bed-ba8231849124"></script><div class="container"><ol class="breadcrumb"><li><a href="/">Gadgetory</a></li><li><a href="/Gamers-Nexus/">Gamers Nexus</a></li><li class="active">Craziest Case at CES - Transforming H-Tower</li></ol></div><h2 class="post__title"><b>Craziest Case at CES - Transforming H-Tower</b></h2><h5 class="post__date">2016-01-07</h5><div class="container"><div class="video-responsive"><iframe width="560" height="315" src="https://www.youtube.com/embed/nBS84rcFPOo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div><div class="post__text">hey everyone i'm steve from gamers nexus
+dotnet and we're at in wins booth at CES
+weighted somewhere in 80 pound area
+mostly aluminum if not all aluminum and
+then you can see the normal components
+@gadgetory
+gadgetory/gadgetory.github.io – How-does-Motorolas-new-ShatterShield-technology-work-ZxnoGFsonpY.html
+Showing the top two matches
+Last indexed on Jul 13, 2018
+HTML
+the making
+moto shatter shield consists of
+specifically these five layers the first
+is a rigid aluminum core that provides
+hands over fist in the dot-com bubble
+remember we didn't call it a dotnet
+bubble or dot org bubble we didn't call
+them dot biz billionaires we called them
+@gadgetory
+gadgetory/gadgetory.github.io – Ultrasonic-Fingerprint-Scanners-How-do-they-work-xhIyy-6iYHE.html
+Showing the top two matches
+Last indexed on Jul 13, 2018
+HTML
+smartphone case built from glass
+aluminum or plastic therefore the
+scanner can be embedded under the case
+allowing for a more discreet look now
+years ago when people were making money
+hand over fist in the dot-com bubble
+remember we didn't call it a dotnet
+bubble or dot org bubble we didn't call
+© 2019 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Press h to open a hovercard with more details.
