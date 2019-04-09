@@ -209,7 +209,7 @@ class AuthyApi
      */
     public function phoneVerificationStart($phone_number, $country_code,
                                            $via='sms', $code_length=4,
-                                           $locale=null)
+                                           $locale=null, $custom_message=null)
     {
 
         $query = [
@@ -221,6 +221,14 @@ class AuthyApi
 
         if ($locale != null) {
             $query["locale"] = $locale;
+        }
+
+        if ($custom_message != null) {
+            $query['custom_message'] = $custom_message;
+        }
+
+        if ($via == 'call' && $custom_message != null && $local == null) {
+            throw new AuthyFormatException('If the via method is set to call and you are using a custom_message the locale is required');
         }
 
         $resp = $this->rest->post("protected/json/phones/verification/start", array_merge(
