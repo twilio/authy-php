@@ -204,12 +204,13 @@ class AuthyApi
      * @param string $country_code User's phone country code stored in your database
      * @param string $via The method the token will be sent to user (sms or call)
      * @param int $code_length The length of the verifcation code to be sent to the user
+    *  @param int $custom_code A pre-generated custom code that can be used. Please read the doc before using this option
      *
      * @return AuthyResponse the server response
      */
     public function phoneVerificationStart($phone_number, $country_code,
                                            $via='sms', $code_length=4,
-                                           $locale=null, $custom_message=null)
+                                           $locale=null, $custom_message=null, $custom_code=null)
     {
 
         $query = [
@@ -227,8 +228,14 @@ class AuthyApi
             $query['custom_message'] = $custom_message;
         }
 
-        if ($via == 'call' && $custom_message != null && $local == null) {
+        if ($via == 'call' && $custom_message != null && $locale == null) {
             throw new AuthyFormatException('If the via method is set to call and you are using a custom_message the locale is required');
+        }
+
+        if ($custom_code != null) {
+            $this->__validate_digit($custom_code, "Invalid Token. Only digits accepted.");
+            $this->__validate_length($custom_code);
+            $query["custom_code"] = $custom_code;
         }
 
         $resp = $this->rest->post("protected/json/phones/verification/start", array_merge(
@@ -356,5 +363,12 @@ class AuthyApi
         }
     }
 
+    private function __validate_length($var, $min_length = 4, $max_length = 10)
+    {
+        $length = strlen((string)$var);
+        if( $length < $min_length or $length > $max_length ) {
+            throw new AuthyFormatException("Invalid Token. Unexpected length.");
+        }
+    }
 
 }
