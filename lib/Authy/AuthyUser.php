@@ -13,7 +13,7 @@
  */
 
 /**
- * User implementation. Extends from Authy_Response
+ * User implementation. Extends from Authy_response
  *
  * @category Services
  * @package  Authy
@@ -23,22 +23,17 @@
  */
 namespace Authy;
 
+use Psr\Http\Message\ResponseInterface;
+
 class AuthyUser extends AuthyResponse
 {
     /**
      * Constructor.
      *
-     * @param array $raw_response Raw server response
+     * @param ResponseInterface $response server response
      */
-    public function __construct($raw_response)
+    public function __construct(ResponseInterface $response)
     {
-        $body = json_decode($raw_response->getBody());
-
-        if (isset($body->user)) {
-            // response is {user: {id: id}}
-            $raw_response->body = $body->user;
-        }
-
-        parent::__construct($raw_response);
+        parent::__construct($response);
     }
 }

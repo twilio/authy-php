@@ -23,35 +23,29 @@
  */
 namespace Authy;
 
+use Psr\Http\Message\ResponseInterface;
+
 class AuthyResponse
 {
-    protected $raw_response;
-    protected $body;
-    protected $errors;
+    /**
+     * @var ResponseInterface
+     */
+    private $response;
+
+    /**
+     * @var array
+     */
+    private $body;
 
     /**
      * Constructor.
      *
-     * @param array $raw_response Raw server response
+     * @param ResponseInterface $response Raw server response
      */
-    public function __construct($raw_response)
+    public function __construct(ResponseInterface $response)
     {
-        $this->raw_response = $raw_response;
-        $this->body = (! isset($raw_response->body)) ? json_decode($raw_response->getBody()) : $raw_response->body;;
-        $this->errors = new \stdClass();
-
-        // Handle errors
-        if (isset($this->body->errors)) {
-            $this->errors = $this->body->errors; // when response is {errors: {}}
-            unset($this->body->errors);
-        } elseif ($raw_response->getStatusCode() == 400) {
-            $this->errors = $this->body; // body here is a stdClass
-            $this->body = new \stdClass();
-        } elseif (!$this->ok() && gettype($this->body) == 'string') {
-            // the response was an error so put the body as an error
-            $this->errors = (object) ["error" => $this->body];
-            $this->body = new \stdClass();
-        }
+        $this->response = $response;
+        $this->body = json_decode((string)$this->response->getBody(), true);
     }
 
     /**
@@ -61,7 +55,7 @@ class AuthyResponse
      */
     public function ok()
     {
-        return $this->raw_response->getStatusCode() == 200;
+        return $this->response->getStatusCode() === 200;
     }
 
     /**
@@ -71,31 +65,42 @@ class AuthyResponse
      */
     public function id()
     {
-        return isset($this->body->id) ? $this->body->id : null;
+        return isset($this->body['user']) && isset($this->body['user']['id']) ? $this->body['user']['id'] : null;
     }
 
     /**
      * Get the request errors
      *
-     * @return stdClass object containing the request errors
+     * @return \stdClass containing the request errors
      */
     public function errors()
     {
-        return $this->errors;
+        $errors = new \stdClass();
+
+        if (!$this->ok()) {
+            foreach ($this->body['errors'] as $key => $value) {
+                $errors->$key = $value;
+            }
+        }
+
+        return $errors;
     }
 
+    /**
+     * @return string
+     */
     public function message()
     {
-        return $this->body->message;
+        return (string)$this->response->getBody();
     }
 
     /**
      * Returns the variable specified in the response if present
      *
-     * @return value
+     * @return mixed
      */
     public function bodyvar($var)
     {
-        return isset($this->body->$var) ? $this->body->$var: null;
+        return isset($this->body[$var]) ? $this->body[$var]: null;
     }
 }
