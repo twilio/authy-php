@@ -1,6 +1,6 @@
 # PHP Client for Authy API
 
-[![Build Status](https://travis-ci.org/authy/authy-php.svg?branch=master)](https://travis-ci.org/authy/authy-php)
+[![Build Status](https://travis-ci.org/twilio/authy-php.svg?branch=master)](https://travis-ci.org/twilio/authy-php)
 
 A php library for using the Authy API.
 
