@@ -340,6 +340,76 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/Call to .* initiated/i', $response->message());
     }
 
+    public function testPhoneVerificationStartWithLocale()
+    {
+        $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call', '6', 'es');
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertRegExp('/Call to .* initiated/i', $response->message());
+    }
+
+    public function testPhoneVerificationStartWithCustomCode()
+    {
+        $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call', '6', null, '1234');
+
+        $this->assertEquals(true, $response->ok());
+        $this->assertRegExp('/Call to .* initiated/i', $response->message());
+    }
+
+    public function testPhoneVerificationStartWithInvalidCustomCode()
+    {
+        $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        try {
+            $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call', '6', null, 'XXX');
+        } catch (AuthyFormatException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid Token. Only digits accepted.');
+            return;
+        }
+        $this->fail('AuthyFormatException has not been raised.');
+    }
+
+    public function testPhoneVerificationStartWithLongerCustomCode()
+    {
+        $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        try {
+            $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call', '6', null, '12345678901');
+        } catch (AuthyFormatException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
+            return;
+        }
+        $this->fail('AuthyFormatException has not been raised.');
+
+    }
+
+    public function testPhoneVerificationStartWithShorterCustomCode()
+    {
+        $mock = new MockHandler([new Response(200, [], '{"message": "Call to xxx-xxx-1111 initiated"}')]);
+        $handler = HandlerStack::create($mock);
+        $mock_client = new AuthyApi('test_api_key', $GLOBALS['test_api_host'], $handler);
+
+        try {
+            $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call', '6', null, '123');
+        } catch (AuthyFormatException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid Token. Unexpected length.');
+            return;
+        }
+        $this->fail('AuthyFormatException has not been raised.');
+    }
+
     public function testPhoneVerificationCheck()
     {
         $mock = new MockHandler([new Response(200, [], '{"message": "Verification code is correct"}')]);
