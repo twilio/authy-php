@@ -45,7 +45,7 @@ You can easily see if the user was created by calling `ok()`.
 If request went right, you need to store the authy id in your database. Use `user->id()` to get this `id` in your database.
 
     if($user->ok())
-        // store user->id() in your user database
+        // store user->bodyvar('id') in your user database
 
 if something goes wrong `ok()` returns `false` and you can see the errors using the following code
 
