@@ -1,148 +1,66 @@
-# PHP Client for Authy API
-
 [![Build Status](https://travis-ci.org/twilio/authy-php.svg?branch=master)](https://travis-ci.org/twilio/authy-php)
 
-A php library for using the Authy API.
+# PHP Client for Twilio Authy Two-Factor Authentication (2FA) API
 
-## Installation
+Documentation for PHP usage of the Authy API lives in the [official Twilio documentation](https://www.twilio.com/docs/authy/api/).
+
+The Authy API supports multiple channels of 2FA:
+* One-time passwords via SMS and voice.
+* Soft token ([TOTP](https://www.twilio.com/docs/glossary/totp) via the Authy App)
+* Push authentication via the Authy App
+
+If you only need SMS and Voice support for one-time passwords, we recommend using the [Twilio Verify API](https://www.twilio.com/docs/verify/api) instead. [More on how to choose between Authy and Verify here.](https://www.twilio.com/docs/verify/authy-vs-verify)
+
+### Authy Quickstart
+
+For a full tutorial, check out the PHP/Laravel Authy Quickstarts in our docs:
+* [PHP/Laravel Authy Quickstart](https://www.twilio.com/docs/authy/quickstart/two-factor-authentication-php-laravel)
+
+## Authy PHP Installation
 
 This library requires PHP 5.6+
 
-### Install via composer:
+Install with [composer](https://www.twilio.com/docs/usage/tutorials/how-to-set-up-your-php-development-environment). The [`authy/php`](http://packagist.org/packages/authy/php) package is available on [Packagist](https://packagist.org/packages/authy/php).
 
-[`authy/php`](http://packagist.org/packages/authy/php) package is available on [Packagist](https://packagist.org/packages/authy/php).
-
-Include it in your `composer.json` as follows:
+Include in your `composer.json` as follows:
 
 	{
 	    "require": {
-	        "authy/php": "3.0"
+	        "authy/php": "3.0.5"
 	    }
 	}
 
-
 ## Usage
 
-To use this client you just need to use Authy_Api and initialize it with your API KEY
+To use the Authy client, import AuthyApiClient and initialize it with your production API Key found in the [Twilio Console](https://www.twilio.com/console/authy/applications/):
+
+```php
+$authy_api = new Authy\AuthyApi('#your_api_key');
+```
+
+![authy api key in console](https://s3.amazonaws.com/com.twilio.prod.twilio-docs/images/account-security-api-key.width-800.png)
+
+## 2FA Workflow
+
+1. [Create a user](https://www.twilio.com/docs/authy/api/users#enabling-new-user)
+2. [Send a one-time password](https://www.twilio.com/docs/authy/api/one-time-passwords)
+3. [Verify a one-time password](https://www.twilio.com/docs/authy/api/one-time-passwords#verify-a-one-time-password)
+
+**OR**
+
+1. [Create a user](https://www.twilio.com/docs/authy/api/users#enabling-new-user)
+2. [Send a push authentication](https://www.twilio.com/docs/authy/api/push-authentications)
+3. [Check a push authentication status](https://www.twilio.com/docs/authy/api/push-authentications#check-approval-request-status)
 
 
-    $authy_api = new Authy\AuthyApi('#your_api_key');
+## <a name="phone-verification"></a>Phone Verification
 
-Now that you have an Authy API object you can start sending requests.
+[Phone verification now lives in the Twilio API](https://www.twilio.com/docs/verify/api) and has [PHP support through the official Twilio helper libraries](https://www.twilio.com/docs/libraries/php). 
 
-## Creating Users
+[Legacy (V1) documentation here.](verify-legacy-v1.md) **Verify V1 is not recommended for new development. Please consider using [Verify V2](https://www.twilio.com/docs/verify/api)**.
 
-__NOTE: User is matched based on cellphone and country code not e-mail.
-A cellphone is uniquely associated with an authy_id.__
+## Contributing
 
-Creating users is very easy, you need to pass an email, a cellphone and _optionally_ a country code:
-
-    $user = $authy_api->registerUser('new_user@email.com', '405-342-5699', 1); //email, cellphone, country_code
-
-in this case `1` is the country code (USA). If no country code is specified, it defaults to USA.
-
-You can easily see if the user was created by calling `ok()`.
-If request went right, you need to store the authy id in your database. Use `user->id()` to get this `id` in your database.
-
-    if($user->ok())
-        // store user->id() in your user database
-
-if something goes wrong `ok()` returns `false` and you can see the errors using the following code
-
-    else
-        foreach($user->errors() as $field => $message) {
-          printf("$field = $message");
-        }
-
-it returns a dictionary explaining what went wrong with the request. Errors will be in plain English and can
-be passed back to the user.
-
-
-## Verifying Tokens
-
-
-__NOTE: Token verification is only enforced if the user has completed registration. To change this behaviour see Forcing Verification section below.__
-
-   >*Registration is completed once the user installs and registers the Authy mobile app or logins once successfully using SMS.*
-
-
-To verify tokens you need the user id and the token. The token you get from the user through your login form.
-
-    $verification = $authy_api->verifyToken('authy-id', 'token-entered-by-the-user');
-
-Once again you can use `ok()` to verify whether the token was valid or not.
-
-    if($verification->ok())
-        // the user is valid
-
-#### Forcing Verification
-
-If you wish to verify tokens even if the user has not yet complete registration, pass force=true when verifying the token.
-
-    $verification = $authy_api->verifyToken('authy-id', 'token-entered-by-the-user', array("force" => "true"));
-
-## Requesting SMS Tokens
-To be able to use this method you need to have activated the SMS plugin for your Authy App.
-
-To request a SMS token you only need the user id.
-
-	$sms = $authy_api->requestSms('authy-id');
-
-As always, you can use `ok()` to verify if the token was sent.
-This call will be ignored if the user is using the Authy Mobile App. If you still want to send
-the SMS pass `force=>true` as an option
-
-    $sms = $authy_api->requestSms('authy-id', array("force" => "true"));
-    
-Additional options can be passed into the array, such as [custom actions](https://www.twilio.com/docs/api/authy/rest/one-time-passwords#custom-actions-optional):
-
-    $sms = $authy_api->requestSms('authy-id', array("action" => "login", "action_message" => "Login code"));
-
-## Checking User Status
-
-To check a user status, just pass the user id.
-
-    $status = $authy_api->userStatus('authy_id');
-
-## Phone Verification && Info
-
-Authy has an API to verify users via phone calls or sms. Also, user phone information can be gethered
-for support and verification purposes.
-
-### Phone Verification Start
-
-In order to start a phone verification, we ask the API to send a token to the user via sms or call:
-
-    $authy_api->phoneVerificationStart('111-111-1111', '1', 'sms');
-
-Optionally you can specify the language that you prefer the phone verification message to be sent. Supported
-languages include: English (`en`), Spanish (`es`), Portuguese (`pt`), German (`de`), French (`fr`) and
-Italian (`it`). If not specified, English will be used.
-
-    $authy_api->phoneVerificationStart('111-111-1111', '1', 'sms', 'es');
-    // This will send a message in spanish
-
-### Phone Verification Check
-
-Once you get the verification from user, you can check if it's valid with:
-
-    $authy_api->phoneVerificationCheck('111-111-1111', '1', '0000');
-
-### Phone Info
-
-If you want to gather additional information about user phone, use phones info.
-
-    $authy_api->phoneInfo('111-111-1111', '1');
-
-## Tests
-
-You will need to install composer `https://getcomposer.org/download/`
-and install dependencies with `composer install --no-dev`. Also
-You will need to install phpunit `https://phpunit.de/manual/current/en/installation.html`
-
-Then you can run test by executing this command `make`
-
-## Contribute
 You can use docker to run tests and develop locally without the need to install the dependencies directly in your machine:
 
 ```
@@ -153,12 +71,8 @@ make docker-deps  # Install dependencies (in the `vendor` directory)
 make docker-test  # Runs the tests
 ```
 
-To contribute, just make your changes and send a Pull Request to the authy/authy-php repo.
-
-### More…
-
-You can find the full API documentation in the [official documentation](https://docs.authy.com) page.
+To contribute, make your changes in a branch and send a Pull Request to the twilio/authy-php repo.
 
 ## Copyright
 
-Copyright (c) 2011-2020 Authy Inc.
+Copyright (c) 2011-2020 Authy Inc. See [LICENSE](https://github.com/twilio/authy-php/blob/master/LICENSE) for further details.
