@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/twilio/authy-php.svg?branch=master)](https://travis-ci.org/twilio/authy-php)
+[![Packagist version](https://badge.fury.io/ph/authy%2Fphp.svg)](https://packagist.org/packages/authy/php) [![Build Status](https://travis-ci.org/twilio/authy-php.svg?branch=master)](https://travis-ci.org/twilio/authy-php)
 
 # PHP Client for Twilio Authy Two-Factor Authentication (2FA) API
 
