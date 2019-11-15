@@ -25,7 +25,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $mock_client = $this->mockClient([[200, '{ "user": { "id": 2 } }']]);
         $user = $mock_client->registerUser('user@example.com', '305-456-2345', 1);
 
-        $this->assertEquals("integer", gettype($user->id()));
+        $this->assertEquals("integer", \gettype($user->id()));
         $this->assertEmpty((array) $user->errors());
     }
 
@@ -34,7 +34,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $mock_client = $this->mockClient([[400, '{ "errors": { "message": "User was not valid", "email":"is invalid", "cellphone":"is invalid" } }']]);
         $user = $mock_client->registerUser('user@example.com', '', 1);
 
-        $this->assertEquals("NULL", gettype($user->id()));
+        $this->assertEquals("NULL", \gettype($user->id()));
         $this->assertNotEmpty((array) $user->errors());
 
         $errors = (array) $user->errors();
@@ -343,7 +343,7 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     {
         $responses = [];
         foreach($_resp as $r) {
-            array_push($responses, new Response($r[0], [], $r[1]));
+            \array_push($responses, new Response($r[0], [], $r[1]));
         }
 
         $mock = new MockHandler($responses);

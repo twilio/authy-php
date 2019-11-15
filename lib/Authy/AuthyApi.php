@@ -66,7 +66,7 @@ class AuthyApi
      */
     public function registerUser($email, $cellphone, $country_code = 1, $send_install_link = True)
     {
-        $resp = $this->rest->post('protected/json/users/new', array_merge(
+        $resp = $this->rest->post('protected/json/users/new', \array_merge(
             $this->default_options,
             [
                 'query' => [
@@ -94,17 +94,17 @@ class AuthyApi
      */
     public function verifyToken($authy_id, $token, $opts = [])
     {
-        if (! array_key_exists("force", $opts)) {
+        if (! \array_key_exists("force", $opts)) {
             $opts["force"] = "true";
         } else {
             unset($opts["force"]);
         }
 
-        $token = urlencode($token);
-        $authy_id = urlencode($authy_id);
+        $token = \urlencode($token);
+        $authy_id = \urlencode($authy_id);
         $this->__validateVerify($token, $authy_id);
 
-        $resp = $this->rest->get("protected/json/verify/{$token}/{$authy_id}", array_merge(
+        $resp = $this->rest->get("protected/json/verify/{$token}/{$authy_id}", \array_merge(
             $this->default_options,
             ['query' => $opts]
         ));
@@ -122,9 +122,9 @@ class AuthyApi
      */
     public function requestSms($authy_id, $opts = [])
     {
-        $authy_id = urlencode($authy_id);
+        $authy_id = \urlencode($authy_id);
 
-        $resp = $this->rest->get("protected/json/sms/{$authy_id}", array_merge(
+        $resp = $this->rest->get("protected/json/sms/{$authy_id}", \array_merge(
             $this->default_options,
             ['query' => $opts]
         ));
@@ -143,8 +143,8 @@ class AuthyApi
      */
     public function phoneCall($authy_id, $opts = [])
     {
-        $authy_id = urlencode($authy_id);
-        $resp = $this->rest->get("protected/json/call/{$authy_id}", array_merge(
+        $authy_id = \urlencode($authy_id);
+        $resp = $this->rest->get("protected/json/call/{$authy_id}", \array_merge(
             $this->default_options,
             ['query' => $opts]
         ));
@@ -161,7 +161,7 @@ class AuthyApi
      */
     public function deleteUser($authy_id)
     {
-        $authy_id = urlencode($authy_id);
+        $authy_id = \urlencode($authy_id);
         $resp = $this->rest->post("protected/json/users/{$authy_id}/remove", $this->default_options);
         return new AuthyResponse($resp);
     }
@@ -175,7 +175,7 @@ class AuthyApi
      */
     public function userStatus($authy_id)
     {
-        $authy_id = urlencode($authy_id);
+        $authy_id = \urlencode($authy_id);
         $resp = $this->rest->get("protected/json/users/{$authy_id}/status", $this->default_options);
         return new AuthyResponse($resp);
     }
@@ -206,7 +206,7 @@ class AuthyApi
             $query["locale"] = $locale;
         }
 
-        $resp = $this->rest->post("protected/json/phones/verification/start", array_merge(
+        $resp = $this->rest->post("protected/json/phones/verification/start", \array_merge(
             $this->default_options,
             ['query' => $query]
         ));
@@ -225,7 +225,7 @@ class AuthyApi
      */
     public function phoneVerificationCheck($phone_number, $country_code, $verification_code)
     {
-        $resp = $this->rest->get("protected/json/phones/verification/check", array_merge(
+        $resp = $this->rest->get("protected/json/phones/verification/check", \array_merge(
             $this->default_options,
             [
                 'query' => [
@@ -249,7 +249,7 @@ class AuthyApi
      */
     public function phoneInfo($phone_number, $country_code)
     {
-        $resp = $this->rest->get("protected/json/phones/info", array_merge(
+        $resp = $this->rest->get("protected/json/phones/info", \array_merge(
             $this->default_options,
             [
                 'query' => [
@@ -276,8 +276,8 @@ class AuthyApi
     {
         $opts['message'] = $message;
         
-        $authy_id = urlencode($authy_id);
-        $resp = $this->rest->post("onetouch/json/users/{$authy_id}/approval_requests", array_merge(
+        $authy_id = \urlencode($authy_id);
+        $resp = $this->rest->post("onetouch/json/users/{$authy_id}/approval_requests", \array_merge(
             $this->default_options,
             ['query' => $opts]
         ));
@@ -296,7 +296,7 @@ class AuthyApi
      */
     public function getApprovalRequest($request_uuid)
     {
-        $request_uuid = urlencode($request_uuid);
+        $request_uuid = \urlencode($request_uuid);
         $resp = $this->rest->get("onetouch/json/approval_requests/{$request_uuid}");
 
         return new AuthyResponse($resp);
@@ -304,13 +304,13 @@ class AuthyApi
 
     private function __getUserAgent()
     {
-        return sprintf(
+        return \sprintf(
             'AuthyPHP/%s (%s-%s-%s; PHP %s)',
             AuthyApi::VERSION,
-            php_uname('s'),
-            php_uname('r'),
-            php_uname('m'),
-            phpversion()
+            \php_uname('s'),
+            \php_uname('r'),
+            \php_uname('m'),
+            \phpversion()
         );
     }
 
@@ -318,7 +318,7 @@ class AuthyApi
     {
         $this->__validate_digit($token, "Invalid Token. Only digits accepted.");
         $this->__validate_digit($authy_id, "Invalid Authy id. Only digits accepted.");
-        $length = strlen((string)$token);
+        $length = \strlen((string)$token);
         if( $length < 6 or $length > 10 ) {
             throw new AuthyFormatException("Invalid Token. Unexpected length.");
         }
@@ -326,7 +326,7 @@ class AuthyApi
 
     private function __validate_digit($var, $message)
     {
-        if( !is_int($var) && !is_numeric($var) ) {
+        if( !\is_int($var) && !\is_numeric($var) ) {
             throw new AuthyFormatException($message);
         }
     }

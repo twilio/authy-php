@@ -32,7 +32,7 @@ class AuthyUser extends AuthyResponse
      */
     public function __construct($raw_response)
     {
-        $body = json_decode($raw_response->getBody());
+        $body = \json_decode($raw_response->getBody());
 
         if (isset($body->user)) {
             // response is {user: {id: id}}
