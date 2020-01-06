@@ -2,8 +2,8 @@
     "name": "authy/php",
     "type": "library",
     "description": "PHP client for Authy",
-    "keywords": ["api", "authentication", "two-factor"],
-    "homepage": "https://github.com/authy/authy-php",
+    "keywords": ["api", "authentication", "two-factor", "2fa"],
+    "homepage": "https://github.com/twilio/authy-php",
     "license": "MIT",
     "require": {
         "php": ">=5.6.0",
@@ -14,8 +14,15 @@
     },
     "authors": [
         {
-            "name": "David Cuadrado",
-            "email": "david@authy.com"
+            "name": "Twilio Authy",
+            "email": "help@twilio.com",
+            "homepage": "https://www.twilio.com/docs/authy/api",
+            "role": "Official support"
+        },
+        {
+            "name": "Kelley Robinson",
+            "email": "krobinson@twilio.com",
+            "role": "Developer"
         }
     ],
     "autoload": {
