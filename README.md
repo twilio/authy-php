@@ -18,7 +18,7 @@ For a full tutorial, check out the PHP/Laravel Authy Quickstarts in our docs:
 
 ## Authy PHP Installation
 
-This library requires PHP 5.6+
+This library requires PHP 7.4+
 
 Install with [composer](https://www.twilio.com/docs/usage/tutorials/how-to-set-up-your-php-development-environment). The [`authy/php`](http://packagist.org/packages/authy/php) package is available on [Packagist](https://packagist.org/packages/authy/php).
 
@@ -61,14 +61,17 @@ $authy_api = new Authy\AuthyApi('#your_api_key');
 
 ## Contributing
 
-You can use docker to run tests and develop locally without the need to install the dependencies directly in your machine:
-
+by executing the below code, you will ensure that you have the latest versions of the required packages
 ```
 git clone git@github.com:authy/authy-php.git
 cd authy-php
-make docker-build # Creates the docker image
-make docker-deps  # Install dependencies (in the `vendor` directory)
-make docker-test  # Runs the tests
+composer install
+```
+
+To assist in ensuring the stability of this package, please ensure tests are run using
+
+```
+vendor/bin/phpunit
 ```
 
 To contribute, make your changes in a branch and send a Pull Request to the twilio/authy-php repo.
