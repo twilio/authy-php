@@ -1,9 +1,14 @@
 <?php
 
+namespace Authy;
+
+use Psr\Http\Message\ResponseInterface;
+use stdClass;
+
 /**
  * ApiClient
  *
- * PHP version 5
+ * PHP version 7.4
  *
  * @category Services
  * @package  Authy
@@ -21,55 +26,55 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-namespace Authy;
-
 class AuthyResponse
 {
-    protected $raw_response;
-    protected $body;
-    protected $errors;
+    /**
+     * @var ResponseInterface $guzzleResponse the guzzle response received
+     */
+    protected ResponseInterface $guzzleResponse;
+
+    /**
+     * @var stdClass|null the body of the response
+     */
+    protected ?stdClass $body;
+
+    /**
+     * @var stdClass the errors for the response
+     */
+    protected stdClass $errors;
 
     /**
      * Constructor.
      *
-     * @param array $raw_response Raw server response
+     * @param ResponseInterface $guzzleResponse the Guzzle Response
      */
-    public function __construct($raw_response)
+    public function __construct(ResponseInterface $guzzleResponse)
     {
-        $this->raw_response = $raw_response;
-        $this->body = (! isset($raw_response->body)) ? json_decode($raw_response->getBody()) : $raw_response->body;;
-        $this->errors = new \stdClass();
+        $this->guzzleResponse = $guzzleResponse;
+        $this->body = !isset($this->guzzleResponse->body)
+            ? json_decode($this->guzzleResponse->getBody())
+            : $this->guzzleResponse->body;
+        $this->errors = new stdClass();
 
-        // Handle errors
-        if (isset($this->body->errors)) {
-            $this->errors = $this->body->errors; // when response is {errors: {}}
-            unset($this->body->errors);
-        } elseif ($raw_response->getStatusCode() == 400) {
-            $this->errors = $this->body; // body here is a stdClass
-            $this->body = new \stdClass();
-        } elseif (!$this->ok() && gettype($this->body) == 'string') {
-            // the response was an error so put the body as an error
-            $this->errors = (object) ["error" => $this->body];
-            $this->body = new \stdClass();
-        }
+        $this->allocateAccurateErrorsAndBody();
     }
 
     /**
      * Check if the response was ok
      *
-     * @return boolean return true if the response code is 200
+     * @return bool return true if the response code is 200
      */
-    public function ok()
+    public function ok(): bool
     {
-        return $this->raw_response->getStatusCode() == 200;
+        return $this->guzzleResponse->getStatusCode() == 200;
     }
 
     /**
      * Returns the id of the response if present
      *
-     * @return integer id of the response
+     * @return int|null id of the response
      */
-    public function id()
+    public function id(): ?int
     {
         return isset($this->body->id) ? $this->body->id : null;
     }
@@ -79,23 +84,39 @@ class AuthyResponse
      *
      * @return stdClass object containing the request errors
      */
-    public function errors()
+    public function errors(): stdClass
     {
         return $this->errors;
     }
 
-    public function message()
+    /**
+     * @return string
+     */
+    public function message(): string
     {
         return $this->body->message;
     }
 
     /**
-     * Returns the variable specified in the response if present
-     *
-     * @return value
+     * @param string $value
+     * @return mixed
      */
-    public function bodyvar($var)
+    public function getBodyValue(string $value)
     {
-        return isset($this->body->$var) ? $this->body->$var: null;
+        return isset($this->body->$value) ? $this->body->$value : null;
+    }
+
+    private function allocateAccurateErrorsAndBody(): void
+    {
+        if (isset($this->body->errors)) {
+            $this->errors = $this->body->errors;
+            unset($this->body->errors);
+        } elseif ($this->guzzleResponse->getStatusCode() === 400) {
+            $this->errors = $this->body;
+            $this->body = new stdClass();
+        } elseif (!$this->ok() && gettype($this->body) === 'string') {
+            $this->errors = (object) ["error" => $this->body];
+            $this->body = new stdClass();
+        }
     }
 }

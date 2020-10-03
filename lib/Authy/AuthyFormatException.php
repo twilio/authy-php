@@ -1,9 +1,11 @@
 <?php
 
+namespace Authy;
+
 /**
  * ApiClient
  *
- * PHP version 5
+ * PHP version 7.4
  *
  * @category Services
  * @package  Authy
@@ -21,8 +23,7 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-namespace Authy;
+class AuthyFormatException extends \Exception
+{
 
-class AuthyFormatException extends \Exception {}
-
-?>
+}

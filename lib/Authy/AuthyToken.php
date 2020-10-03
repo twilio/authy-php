@@ -1,9 +1,11 @@
 <?php
 
+namespace Authy;
+
 /**
  * ApiClient
  *
- * PHP version 5
+ * PHP version 7.4
  *
  * @category Services
  * @package  Authy
@@ -21,21 +23,19 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-namespace Authy;
-
 class AuthyToken extends AuthyResponse
 {
-
     /**
      * Check if the response was ok
      *
-     * @return boolean return true if the response code is 200
+     * @return bool return true if the response code is 200
      */
-    public function ok()
+    public function ok(): bool
     {
-        if( parent::ok() ){
-            return $this->bodyvar('token') == 'is valid';
+        if (parent::ok()) {
+            return $this->getBodyValue('token') == 'is valid';
         }
+
         return false;
     }
 }

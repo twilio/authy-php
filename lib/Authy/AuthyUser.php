@@ -1,9 +1,13 @@
 <?php
 
+namespace Authy;
+
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * ApiClient
  *
- * PHP version 5
+ * PHP version 7.4
  *
  * @category Services
  * @package  Authy
@@ -21,24 +25,21 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
-namespace Authy;
-
 class AuthyUser extends AuthyResponse
 {
     /**
      * Constructor.
      *
-     * @param array $raw_response Raw server response
+     * @param ResponseInterface $guzzleResponse the response from Guzzle
      */
-    public function __construct($raw_response)
+    public function __construct(ResponseInterface $guzzleResponse)
     {
-        $body = json_decode($raw_response->getBody());
+        $body = json_decode($guzzleResponse->getBody());
 
         if (isset($body->user)) {
-            // response is {user: {id: id}}
-            $raw_response->body = $body->user;
+            $guzzleResponse->body = $body->user;
         }
 
-        parent::__construct($raw_response);
+        parent::__construct($guzzleResponse);
     }
 }
