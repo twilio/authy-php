@@ -1,4 +1,4 @@
-FROM php:5.6-cli
+FROM php:7.2-cli
 
 WORKDIR /home/authy-php
 SHELL ["/bin/bash", "-c"]
@@ -9,9 +9,4 @@ RUN  apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # Composer (See: https://getcomposer.org/doc/faqs/how-to-install-composer-programmatically.md)
-RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/1b137f8bf6db3e79a38a5bc45324414a6b1f9df2/web/installer -O - -q | php -- --install-dir=/bin --filename=composer
-
-# PHPUnit
-RUN wget https://phar.phpunit.de/phpunit-5.7.phar
-RUN chmod +x phpunit-5.7.phar
-RUN mv phpunit-5.7.phar /bin/phpunit
+RUN wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --install-dir=/bin --filename=composer

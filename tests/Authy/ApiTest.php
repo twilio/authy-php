@@ -6,15 +6,14 @@ use Authy\AuthyFormatException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Stream\Stream;
 
-class ApiTest extends \PHPUnit_Framework_TestCase
+class ApiTest extends \PHPUnit\Framework\TestCase
 {
     private $invalid_token;
     private $valid_token;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->invalid_token = '1234567';
         $this->valid_token = '0000000';
