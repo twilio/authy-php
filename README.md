@@ -75,4 +75,4 @@ To contribute, make your changes in a branch and send a Pull Request to the twil
 
 ## Copyright
 
-Copyright (c) 2011-2020 Authy Inc. See [LICENSE](https://github.com/twilio/authy-php/blob/master/LICENSE) for further details.
+Copyright (c) 2011-2020 Authy Inc. See [LICENSE](https://github.com/twilio/authy-php/blob/master/LICENSE.md) for further details.
