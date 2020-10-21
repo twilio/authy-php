@@ -179,6 +179,25 @@ class AuthyApi
         $resp = $this->rest->get("protected/json/users/{$authy_id}/status", $this->default_options);
         return new AuthyResponse($resp);
     }
+    
+    /**
+     * Request QR code link.
+     *
+     * @param string $authy_id User's id stored in your database
+     * @param array  $opts     Array of options, for example: array("qr_size" => 300)
+     *
+     * @return AuthyResponse the server response
+     */
+    public function qrCode($authy_id, $opts = [])
+    {
+        $authy_id = urlencode($authy_id);
+        $resp = $this->rest->post("protected/json/users/{$authy_id}/secret", array_merge(
+            $this->default_options,
+            ['query' => $opts]
+        ));
+
+        return new AuthyResponse($resp);
+    }
 
     /**
      * Starts phone verification. (Sends token to user via sms or call).
