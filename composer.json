@@ -6,11 +6,11 @@
     "homepage": "https://github.com/twilio/authy-php",
     "license": "MIT",
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.2.5||^8.0",
         "guzzlehttp/guzzle": "~6.0||~7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8||^9"
     },
     "authors": [
         {
