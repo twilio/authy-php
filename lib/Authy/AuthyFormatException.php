@@ -23,6 +23,6 @@
  */
 namespace Authy;
 
-class AuthyFormatException extends \Exception {}
-
-?>
+class AuthyFormatException extends \Exception
+{
+}

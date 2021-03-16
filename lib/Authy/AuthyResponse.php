@@ -21,6 +21,7 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
+
 namespace Authy;
 
 class AuthyResponse
@@ -37,7 +38,7 @@ class AuthyResponse
     public function __construct($raw_response)
     {
         $this->raw_response = $raw_response;
-        $this->body = (! isset($raw_response->body)) ? json_decode($raw_response->getBody()) : $raw_response->body;;
+        $this->body = (!isset($raw_response->body)) ? json_decode($raw_response->getBody()) : $raw_response->body;;
         $this->errors = new \stdClass();
 
         // Handle errors
@@ -49,7 +50,7 @@ class AuthyResponse
             $this->body = new \stdClass();
         } elseif (!$this->ok() && gettype($this->body) == 'string') {
             // the response was an error so put the body as an error
-            $this->errors = (object) ["error" => $this->body];
+            $this->errors = (object)["error" => $this->body];
             $this->body = new \stdClass();
         }
     }
@@ -96,6 +97,6 @@ class AuthyResponse
      */
     public function bodyvar($var)
     {
-        return isset($this->body->$var) ? $this->body->$var: null;
+        return isset($this->body->$var) ? $this->body->$var : null;
     }
 }

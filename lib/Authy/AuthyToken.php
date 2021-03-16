@@ -21,11 +21,11 @@
  * @license  http://creativecommons.org/licenses/MIT/ MIT
  * @link     http://authy.github.com/pear
  */
+
 namespace Authy;
 
 class AuthyToken extends AuthyResponse
 {
-
     /**
      * Check if the response was ok
      *
@@ -33,7 +33,7 @@ class AuthyToken extends AuthyResponse
      */
     public function ok()
     {
-        if( parent::ok() ){
+        if (parent::ok()) {
             return $this->bodyvar('token') == 'is valid';
         }
         return false;
