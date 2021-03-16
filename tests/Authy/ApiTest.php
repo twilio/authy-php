@@ -236,7 +236,7 @@ class ApiTest extends \PHPUnit\Framework\TestCase
         $call = $mock_client->phoneCall($user->id(), []);
 
         $this->assertEquals(true, $call->ok());
-        $this->assertRegExp('/Call started/i', $call->message());
+        $this->assertMatchesRegularExpression('/Call started/i', $call->message());
     }
     
     public function testQrCodeWithInvalidUser()
@@ -312,7 +312,7 @@ class ApiTest extends \PHPUnit\Framework\TestCase
         $response = $mock_client->PhoneVerificationStart('111-111-1111', '1');
 
         $this->assertEquals(true, $response->ok());
-        $this->assertRegExp('/Text message sent/i', $response->message());
+        $this->assertMatchesRegularExpression('/Text message sent/i', $response->message());
     }
 
     public function testPhoneVerificationStartWithVia()
@@ -324,7 +324,7 @@ class ApiTest extends \PHPUnit\Framework\TestCase
         $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call');
 
         $this->assertEquals(true, $response->ok());
-        $this->assertRegExp('/Call to .* initiated/i', $response->message());
+        $this->assertMatchesRegularExpression('/Call to .* initiated/i', $response->message());
     }
 
     public function testPhoneVerificationStartWithCodeLength()
@@ -336,7 +336,7 @@ class ApiTest extends \PHPUnit\Framework\TestCase
         $response = $mock_client->PhoneVerificationStart('111-111-1111', '1', 'call', '6');
 
         $this->assertEquals(true, $response->ok());
-        $this->assertRegExp('/Call to .* initiated/i', $response->message());
+        $this->assertMatchesRegularExpression('/Call to .* initiated/i', $response->message());
     }
 
     public function testPhoneVerificationCheck()
@@ -348,7 +348,7 @@ class ApiTest extends \PHPUnit\Framework\TestCase
         $response = $mock_client->PhoneVerificationCheck('111-111-1111', '1', '0000');
 
         $this->assertEquals(true, $response->ok());
-        $this->assertRegExp('/Verification code is correct/i', $response->message());
+        $this->assertMatchesRegularExpression('/Verification code is correct/i', $response->message());
     }
 
     public function testPhoneInfo()
@@ -357,7 +357,7 @@ class ApiTest extends \PHPUnit\Framework\TestCase
         $response = $mock_client->PhoneInfo('111-111-1111', '1');
 
         $this->assertEquals(true, $response->ok());
-        $this->assertRegExp('/Phone number information/i', $response->message());
+        $this->assertMatchesRegularExpression('/Phone number information/i', $response->message());
     }
 
     private function mockClient($_resp)
