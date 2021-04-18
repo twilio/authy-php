@@ -7,7 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3||^8.0",
-        "guzzlehttp/guzzle": "~6.0||~7.0"
+        "guzzlehttp/guzzle": "~6.0||~7.0",
         "ext-curl": "*"
     },
     "require-dev": {
