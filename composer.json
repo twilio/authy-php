@@ -6,7 +6,7 @@
     "homepage": "https://github.com/twilio/authy-php",
     "license": "MIT",
     "require": {
-        "php": "^7.2.5||^8.0",
+        "php": "^7.3||^8.0",
         "guzzlehttp/guzzle": "~6.0||~7.0",
         "ext-curl": "*"
     },
