@@ -24,16 +24,30 @@
 
 namespace Authy;
 
+use \Psr\Http\Message\ResponseInterface;
+use \stdClass;
+
 class AuthyResponse
 {
+    /**
+     * @var ResponseInterface
+     */
     protected $raw_response;
+
+    /**
+     * @var stdClass
+     */
     protected $body;
+
+    /**
+     * @var stdClass
+     */
     protected $errors;
 
     /**
      * Constructor.
      *
-     * @param array $raw_response Raw server response
+     * @param ResponseInterface $raw_response Raw server response
      */
     public function __construct($raw_response)
     {
@@ -58,7 +72,7 @@ class AuthyResponse
     /**
      * Check if the response was ok
      *
-     * @return boolean return true if the response code is 200
+     * @return bool return true if the response code is 200
      */
     public function ok()
     {
@@ -68,7 +82,7 @@ class AuthyResponse
     /**
      * Returns the id of the response if present
      *
-     * @return integer id of the response
+     * @return int|null id of the response
      */
     public function id()
     {
@@ -85,6 +99,9 @@ class AuthyResponse
         return $this->errors;
     }
 
+    /**
+     * @return string
+     */
     public function message()
     {
         return $this->body->message;
@@ -93,7 +110,7 @@ class AuthyResponse
     /**
      * Returns the variable specified in the response if present
      *
-     * @return value
+     * @return mixed|null
      */
     public function bodyvar($var)
     {

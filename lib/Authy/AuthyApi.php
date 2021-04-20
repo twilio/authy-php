@@ -24,18 +24,34 @@
 
 namespace Authy;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+
 class AuthyApi
 {
     const VERSION = '3.0.4';
 
+    /**
+     * @var Client
+     */
     protected $rest;
+
+    /**
+     * @var string
+     */
     protected $api_url;
+
+    /**
+     * @var array
+     */
+    protected $default_options = [];
 
     /**
      * Constructor.
      *
      * @param string $api_key Api Key
      * @param string $api_url Optional api url
+     * @param callable|null $http_handler
      */
     public function __construct($api_key, $api_url = "https://api.authy.com", $http_handler = null)
     {
@@ -73,6 +89,7 @@ class AuthyApi
      * @param string $email New user's email
      * @param string $cellphone New user's cellphone
      * @param int $country_code New user's country code. defaults to USA(1)
+     * @param  bool      $send_install_link Enable or disable an sms message with a link to download the Authy App
      * @return AuthyUser the new registered user
      */
     public function registerUser($email, $cellphone, $country_code = 1, $send_install_link = true)
@@ -105,6 +122,7 @@ class AuthyApi
      * @param array $opts Array of options, for example: array("force" => "true")
      *
      * @return AuthyResponse the server response
+     * @throws AuthyFormatException|GuzzleException
      */
     public function verifyToken($authy_id, $token, $opts = [])
     {
@@ -153,6 +171,7 @@ class AuthyApi
      * @param array $opts Array of options, for example: array("force" => "true")
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function requestSms($authy_id, $opts = [])
     {
@@ -177,6 +196,7 @@ class AuthyApi
      * @param array $opts Array of options, for example: array("force" => "true")
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function phoneCall($authy_id, $opts = [])
     {
@@ -198,6 +218,7 @@ class AuthyApi
      * @param string $authy_id User's id stored in your database
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function deleteUser($authy_id)
     {
@@ -212,6 +233,7 @@ class AuthyApi
      * @param string $authy_id User's id stored in your database
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function userStatus($authy_id)
     {
@@ -227,6 +249,7 @@ class AuthyApi
      * @param array $opts Array of options, for example: array("qr_size" => 300)
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function qrCode($authy_id, $opts = [])
     {
@@ -248,9 +271,11 @@ class AuthyApi
      * @param string $phone_number User's phone_number stored in your database
      * @param string $country_code User's phone country code stored in your database
      * @param string $via The method the token will be sent to user (sms or call)
-     * @param int $code_length The length of the verifcation code to be sent to the user
+     * @param int $code_length The length of the verification code to be sent to the user
+     * @param string $locale
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function phoneVerificationStart(
         $phone_number,
@@ -289,6 +314,7 @@ class AuthyApi
      * @param string $verification_code The verification code entered by the user to be checked
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function phoneVerificationCheck($phone_number, $country_code, $verification_code)
     {
@@ -316,6 +342,7 @@ class AuthyApi
      * @param string $country_code User's phone country code stored in your database
      *
      * @return AuthyResponse the server response
+     * @throws GuzzleException
      */
     public function phoneInfo($phone_number, $country_code)
     {
@@ -339,11 +366,13 @@ class AuthyApi
      * Create a new approval request for a user
      *
      * @param string $authy_id User's id stored in your database
+     * @param string $message
      * @param array $opts Array of options
      *
      * @return AuthyResponse
      *
      * @see http://docs.authy.com/onetouch.html#create-approvalrequest
+     * @throws GuzzleException
      */
     public function createApprovalRequest($authy_id, $message, $opts = [])
     {
@@ -368,6 +397,7 @@ class AuthyApi
      *
      * @return AuthyResponse
      *
+     * @throws GuzzleException
      * @see http://docs.authy.com/onetouch.html#check-approvalrequest-status
      */
     public function getApprovalRequest($request_uuid)
@@ -376,6 +406,48 @@ class AuthyApi
         $resp = $this->rest->get("onetouch/json/approval_requests/{$request_uuid}");
 
         return new AuthyResponse($resp);
+    }
+
+    /**
+     * @return string
+     */
+    private function __getUserAgent()
+    {
+        return sprintf(
+            'AuthyPHP/%s (%s-%s-%s; PHP %s)',
+            AuthyApi::VERSION,
+            php_uname('s'),
+            php_uname('r'),
+            php_uname('m'),
+            phpversion()
+        );
+    }
+
+    /**
+     * @param int $token
+     * @param int $authy_id
+     * @throws AuthyFormatException
+     */
+    private function __validateVerify($token, $authy_id)
+    {
+        $this->__validate_digit($token, "Invalid Token. Only digits accepted.");
+        $this->__validate_digit($authy_id, "Invalid Authy id. Only digits accepted.");
+        $length = strlen((string)$token);
+        if( $length < 6 or $length > 10 ) {
+            throw new AuthyFormatException("Invalid Token. Unexpected length.");
+        }
+    }
+
+    /**
+     * @param mixed $var
+     * @param string $message
+     * @throws AuthyFormatException
+     */
+    private function __validate_digit($var, $message)
+    {
+        if( !is_int($var) && !is_numeric($var) ) {
+            throw new AuthyFormatException($message);
+        }
     }
 
 }
