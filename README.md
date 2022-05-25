@@ -1,6 +1,21 @@
 [![Packagist version](https://badge.fury.io/ph/authy%2Fphp.svg)](https://packagist.org/packages/authy/php) [![Build Status](https://travis-ci.org/twilio/authy-php.svg?branch=master)](https://travis-ci.org/twilio/authy-php)
 
-# PHP Client for Twilio Authy Two-Factor Authentication (2FA) API
+🚨🚨🚨
+
+**This library is no longer actively maintained.** The Authy API has been replaced with the [Twilio Verify API](https://www.twilio.com/docs/verify). Twilio will support the Authy API through November 1, 2022 for SMS/Voice. After this date, we’ll start to deprecate the service for SMS/Voice. Any requests sent to the API after May 1, 2023, will automatically receive an error.  Push and TOTP will continue to be supported through July 2023.
+ 
+[Learn more about migrating from Authy to Verify.](https://www.twilio.com/blog/migrate-authy-to-verify)
+ 
+Please visit the Twilio Docs for:
+* [Verify + PHP (Laravel) quickstart](https://www.twilio.com/docs/verify/quickstarts/php-laravel)
+* [Twilio PHP helper library](https://www.twilio.com/docs/libraries/php)
+* [Verify API reference](https://www.twilio.com/docs/verify/api)
+ 
+Please direct any questions to [Twilio Support](https://support.twilio.com/hc/en-us). Thank you!
+
+🚨🚨🚨
+
+## PHP Client for Twilio Authy Two-Factor Authentication (2FA) API
 
 Documentation for PHP usage of the Authy API lives in the [official Twilio documentation](https://www.twilio.com/docs/authy/api/).
 
